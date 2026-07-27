@@ -1,5 +1,8 @@
 # Fluxograma completo do pipeline milho (etapas 1–8 + roteiro 1–4)
 
+> ⚠️ Resultados honestos e correções em [`RESULTS_STATUS.md`](RESULTS_STATUS.md)
+> (Produtividade, etapa 8, teto da GAN; + pooled e adaptação de domínio inter-safra).
+
 Diagrama técnico de tudo que foi implementado, com especificações e resultados.
 CRS de todos os produtos geoespaciais: **SIRGAS 2000 / UTM 22S (EPSG:31982)**.
 

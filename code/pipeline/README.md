@@ -1,5 +1,10 @@
 # Pipeline milho — etapas 4–8 do diagrama (safras 2023/24 e 2022/23)
 
+> ⚠️ **Números oficiais/honestos em [`RESULTS_STATUS.md`](RESULTS_STATUS.md).** Alguns resultados
+> abaixo estão otimistas: Produtividade estável é ~**0.44** (pooled), não 0.30; a etapa 8 tem
+> **R² negativo** (proof-of-mechanism); mais épocas de GAN não melhoram (teto em ~2000).
+> Melhorias novas por código: modelo **pooled** multi-safra e **adaptação de domínio** inter-safra.
+
 Implementa as etapas do experimento do diagrama, de forma auto-consistente sobre a **safra 23/24**
 (orto RRENIR + tabela de campo + shapefile, SIRGAS 2000 / UTM 22S) e generalizada à **22/23**.
 

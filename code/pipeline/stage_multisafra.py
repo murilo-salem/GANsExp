@@ -68,15 +68,49 @@ def run_groupkfold(X, y, groups, target, folds=5, max_comp=8):
     return best[0], n_splits, len(y), m
 
 
-def cross_safra(Xtr, ytr, Xte, yte):
-    """Treina numa safra (texture) e testa na outra. Alinha colunas comuns."""
+def run_pooled(f23, y23, m24, y24, target, folds=5, max_comp=8):
+    """Modelo único treinado nas DUAS safras juntas (colunas de textura comuns +
+    dummy de safra), GroupKFold por safra+parcela. Aumenta n e a robustez; a dummy
+    permite offset por safra (ajuda a calibração absoluta), tudo dentro do CV."""
+    X23, X24 = select_block(f23, "texture"), select_block(m24, "texture")
+    cols = [c for c in X23.columns if c in X24.columns]
+    a = X23[cols].copy(); a["season"] = 0.0
+    a["_grp"] = "2223_" + f23["parcela"].astype(str); a["_y"] = y23.values
+    b = X24[cols].copy(); b["season"] = 1.0
+    b["_grp"] = "2324_" + m24["parcela"].astype(str); b["_y"] = y24.values
+    pool = pd.concat([a, b], ignore_index=True)
+    feat_cols = cols + ["season"]
+    X = pool[feat_cols]
+    y = pool["_y"]
+    return run_groupkfold(X, y, pool["_grp"], target, folds=folds, max_comp=max_comp)
+
+
+def cross_safra(Xtr, ytr, Xte, yte, domain_adapt=False):
+    """Treina numa safra (texture) e testa na outra. Alinha colunas comuns.
+
+    domain_adapt: adaptação de domínio não-supervisionada por padronização por-domínio
+    (z-score com a média/desvio de CADA safra). Alinha o 1º/2º momentos das features
+    entre safras (variante "lite" do CORAL/feature-standardization DA) sem usar rótulos
+    da safra-alvo. Corrige o shift de escala de GSD/iluminação/sensor no espaço de X;
+    a calibração ABSOLUTA de y ainda depende de as distribuições do alvo coincidirem
+    (por isso reportamos R² e corr separados — corr = transferência de ranking)."""
     cols = [c for c in Xtr.columns if c in Xte.columns]
     tr = Xtr[cols].notna().all(axis=1) & ytr.notna()
     te = Xte[cols].notna().all(axis=1) & yte.notna()
-    pipe = make_pipeline(StandardScaler(), PLSRegression(min(6, len(cols))))
-    pipe.fit(Xtr[cols][tr].values, ytr[tr].values)
-    yhat = pipe.predict(Xte[cols][te].values).ravel()
-    return len(cols), metrics(yte[te].values, yhat), np.corrcoef(yhat, yte[te].values)[0, 1]
+    Xtr_, ytr_ = Xtr[cols][tr].values, ytr[tr].values
+    Xte_, yte_ = Xte[cols][te].values, yte[te].values
+    nc = min(6, len(cols))
+    if domain_adapt:
+        # padroniza cada domínio pela SUA própria média/desvio (alinhamento de momentos)
+        Xtr_z = StandardScaler().fit_transform(Xtr_)
+        Xte_z = StandardScaler().fit_transform(Xte_)
+        pls = PLSRegression(nc).fit(Xtr_z, ytr_)
+        yhat = pls.predict(Xte_z).ravel()
+    else:
+        pipe = make_pipeline(StandardScaler(), PLSRegression(nc))
+        pipe.fit(Xtr_, ytr_)
+        yhat = pipe.predict(Xte_).ravel()
+    return len(cols), metrics(yte_, yhat), np.corrcoef(yhat, yte_)[0, 1]
 
 
 def main():
@@ -108,13 +142,25 @@ def main():
         lines.append(f"[within {name}] n={n} GroupKFold({ns}) nc={nc}: "
                      f"R²={mt['R2']:.3f} RMSE={mt['RMSE']:.1f} RPD={mt['RPD']:.2f}")
 
-    # ---- (b) cross-safra (texture, colunas comuns) ----
+    # ---- (b) cross-safra (texture, colunas comuns): baseline vs adaptação de domínio ----
     X23, X24 = select_block(f23, "texture"), select_block(m24, "texture")
-    for a, b, Xa, Ya, Xb, Yb in [("2023/24→2022/23", "", X24, y24, X23, y23),
-                                  ("2022/23→2023/24", "", X23, y23, X24, y24)]:
-        k, mt, r = cross_safra(Xa, Ya, Xb, Yb)
-        lines.append(f"[cross {a}] {k} feats: R²={mt['R2']:.3f} RMSE={mt['RMSE']:.1f} "
-                     f"corr={r:.3f}")
+    lines.append("")
+    lines.append("-- Cross-safra: baseline (sem DA) vs adaptação de domínio (z-score por safra) --")
+    for name, Xa, Ya, Xb, Yb in [("2023/24→2022/23", X24, y24, X23, y23),
+                                  ("2022/23→2023/24", X23, y23, X24, y24)]:
+        k, m0, r0 = cross_safra(Xa, Ya, Xb, Yb, domain_adapt=False)
+        _, m1, r1 = cross_safra(Xa, Ya, Xb, Yb, domain_adapt=True)
+        lines.append(f"[cross {name}] {k} feats")
+        lines.append(f"    baseline : R²={m0['R2']:.3f} RMSE={m0['RMSE']:.1f} corr={r0:.3f}")
+        lines.append(f"    +DA      : R²={m1['R2']:.3f} RMSE={m1['RMSE']:.1f} corr={r1:.3f}  "
+                     f"(Δcorr={r1 - r0:+.3f})")
+
+    # ---- (c) modelo POOLED (duas safras juntas + dummy de safra) ----
+    nc, ns, n, mp = run_pooled(f23, y23, m24, y24, tgt)
+    lines.append("")
+    lines.append(f"-- Pooled (22/23 + 23/24, texture+dummy safra) --")
+    lines.append(f"[pooled] n={n} GroupKFold({ns}) nc={nc}: "
+                 f"R²={mp['R2']:.3f} RMSE={mp['RMSE']:.1f} RPD={mp['RPD']:.2f}")
 
     report = "\n".join(lines)
     print(report)
