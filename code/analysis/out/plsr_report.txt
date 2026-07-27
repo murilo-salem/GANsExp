@@ -1,0 +1,35 @@
+=== PLSR + K-FOLD =====================================================
+Alvo: alvo_sintetico (SMOKE-TEST)
+Atributos: bloco 'texture'  (20 colunas)
+Amostras: 60  |  Folds: 5  |  seed: 42
+n_components ótimo (CV): 2  (máx testado: 15)
+
+MÉTRICAS AGREGADAS (predição K-Fold out-of-fold):
+  R²   = 0.1056
+  RMSE = 38.2010
+  MAE  = 28.3030
+  RPD  = 1.0663
+
+POR FOLD:
+  Fold 1: R²=0.378  RMSE=21.918  MAE=16.945  RPD=1.325
+  Fold 2: R²=-0.577  RMSE=47.739  MAE=38.847  RPD=0.832
+  Fold 3: R²=0.047  RMSE=34.165  MAE=28.242  RPD=1.070
+  Fold 4: R²=-0.264  RMSE=36.998  MAE=26.403  RPD=0.929
+  Fold 5: R²=0.386  RMSE=44.734  MAE=31.077  RPD=1.333
+
+Curva R² × n_components (CV):
+  nc= 1: R²=0.014
+  nc= 2: R²=0.106
+  nc= 3: R²=0.077
+  nc= 4: R²=0.077
+  nc= 5: R²=0.021
+  nc= 6: R²=-0.031
+  nc= 7: R²=-0.091
+  nc= 8: R²=-0.091
+  nc= 9: R²=-0.124
+  nc=10: R²=-0.953
+  nc=11: R²=-0.983
+  nc=12: R²=-1.021
+  nc=13: R²=-2.144
+  nc=14: R²=-2.317
+  nc=15: R²=-2.237

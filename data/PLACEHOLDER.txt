@@ -1,0 +1,6 @@
+PLACEHOLDER — pasta "data/"
+
+Esta pasta contem os dados hiperespectrais do projeto (~13 GB) e NAO foi
+enviada ao GitHub por exceder os limites de tamanho.
+
+O conteudo original deve ser colocado aqui neste diretorio.

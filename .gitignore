@@ -1,0 +1,18 @@
+# Dados grandes e backups (nao versionar no GitHub)
+data/
+!data/PLACEHOLDER.txt
+Repo.zip
+pytorch-CycleGAN-and-pix2pix/
+models
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.log
+.ipynb_checkpoints/
+
+# Ambientes
+.venv/
+venv/
+env/

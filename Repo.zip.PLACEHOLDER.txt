@@ -1,0 +1,6 @@
+PLACEHOLDER — arquivo "Repo.zip"
+
+Backup compactado do projeto (~13 GB). NAO foi enviado ao GitHub por exceder
+o limite de 100 MB por arquivo.
+
+O arquivo original "Repo.zip" deve ser colocado neste diretorio raiz.

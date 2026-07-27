@@ -1,0 +1,9 @@
+=== ETAPA 8 — CENÁRIOS (projeção veg->GAN->reprodutivo sintético->PLSR) ===
+Alvo: Biomassa  |  parcelas de validação: 24
+Erro de imagem sintético vs real (L1): 0.1115
+
+Predição do Y medido a partir de:
+  REPRODUTIVO REAL     -> R²=-1.145  RMSE=7140.81  RPD=0.70
+  REPRODUTIVO SINTÉTICO-> R²=-0.493  RMSE=5958.14  RPD=0.84
+
+Gap de predição (sintético vs real): MAE=6921.73

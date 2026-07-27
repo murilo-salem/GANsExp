@@ -1,0 +1,29 @@
+=== PLSR + K-FOLD =====================================================
+Alvo: Produtividade
+Atributos: bloco 'indices'  (9 colunas)
+Amostras: 120  |  Folds: 5  |  seed: 42
+n_components ótimo (CV): 6  (máx testado: 9)
+
+MÉTRICAS AGREGADAS (predição K-Fold out-of-fold):
+  R²   = -980.8966
+  RMSE = 62666.0130
+  MAE  = 7156.1324
+  RPD  = 0.0320
+
+POR FOLD:
+  Fold 1: R²=-3710.993  RMSE=140093.675  MAE=30924.439  RPD=0.017
+  Fold 2: R²=0.384  RMSE=1366.628  MAE=1120.012  RPD=1.302
+  Fold 3: R²=0.572  RMSE=1381.275  MAE=1143.728  RPD=1.561
+  Fold 4: R²=0.244  RMSE=1802.415  MAE=1503.656  RPD=1.175
+  Fold 5: R²=0.315  RMSE=1372.533  MAE=1088.828  RPD=1.234
+
+Curva R² × n_components (CV):
+  nc= 1: R²=-5317.238
+  nc= 2: R²=-29953.728
+  nc= 3: R²=-295129.695
+  nc= 4: R²=-536437.215
+  nc= 5: R²=-247617.544
+  nc= 6: R²=-980.897
+  nc= 7: R²=-2326356.028
+  nc= 8: R²=-2825440.565
+  nc= 9: R²=-2812871.536

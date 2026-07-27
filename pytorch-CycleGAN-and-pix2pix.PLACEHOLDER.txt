@@ -1,0 +1,8 @@
+PLACEHOLDER — pasta "pytorch-CycleGAN-and-pix2pix/"
+
+Clone do repositorio upstream CycleGAN/pix2pix + checkpoints (~16 GB). NAO foi
+enviado ao GitHub por ser um repositorio git proprio e por exceder os limites
+de tamanho.
+
+Clonar de: https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix
+e restaurar os checkpoints neste diretorio.

@@ -1,0 +1,7 @@
+PLACEHOLDER — "models"
+
+Symlink que aponta para:
+  pytorch-CycleGAN-and-pix2pix/checkpoints
+
+Recriar apos restaurar a pasta pytorch-CycleGAN-and-pix2pix/ com:
+  ln -s pytorch-CycleGAN-and-pix2pix/checkpoints models

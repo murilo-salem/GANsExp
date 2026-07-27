@@ -1,0 +1,29 @@
+=== PLSR + K-FOLD =====================================================
+Alvo: Biomassa
+Atributos: bloco 'indices'  (9 colunas)
+Amostras: 120  |  Folds: 5  |  seed: 42
+n_components ótimo (CV): 1  (máx testado: 9)
+
+MÉTRICAS AGREGADAS (predição K-Fold out-of-fold):
+  R²   = -7936.6783
+  RMSE = 509168.3179
+  MAE  = 51136.6570
+  RPD  = 0.0113
+
+POR FOLD:
+  Fold 1: R²=-26445.652  RMSE=1138504.118  MAE=242901.538  RPD=0.006
+  Fold 2: R²=0.423  RMSE=4598.028  MAE=3390.613  RPD=1.345
+  Fold 3: R²=0.378  RMSE=4671.186  MAE=3167.357  RPD=1.295
+  Fold 4: R²=0.077  RMSE=3482.792  MAE=2935.050  RPD=1.063
+  Fold 5: R²=0.200  RMSE=3893.741  MAE=3288.727  RPD=1.142
+
+Curva R² × n_components (CV):
+  nc= 1: R²=-7936.678
+  nc= 2: R²=-11397.134
+  nc= 3: R²=-115340.200
+  nc= 4: R²=-81316.184
+  nc= 5: R²=-240320.710
+  nc= 6: R²=-1307680.159
+  nc= 7: R²=-4384964.660
+  nc= 8: R²=-1718005.096
+  nc= 9: R²=-1350240.583

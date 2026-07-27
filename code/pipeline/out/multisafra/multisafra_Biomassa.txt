@@ -1,0 +1,5 @@
+=== PASSO 4 — MULTI-SAFRA (alvo=Biomassa, bloco=texture) ===
+[within 2022/23] n=192 GroupKFold(5) nc=7: R²=0.687 RMSE=3655.2 RPD=1.79
+[within 2023/24] n=120 GroupKFold(5) nc=8: R²=0.799 RMSE=2564.3 RPD=2.24
+[cross 2023/24→2022/23] 33 feats: R²=-0.296 RMSE=7442.6 corr=-0.059
+[cross 2022/23→2023/24] 33 feats: R²=-12.981 RMSE=21368.8 corr=-0.475
