@@ -1,0 +1,17 @@
+[experiment]
+run_id = "2324_rfinal_forecast_prepare"
+season = "2023_2024"
+validation_unit = "parcela"
+
+[inputs]
+source_stage4 = "{artifacts}/runs/2223_stage4_phenology/results/manifest.csv"
+target_stage4 = "{artifacts}/runs/2324_stage4_phenology/results/manifest.csv"
+
+[execution]
+entrypoint = "{root}/code/pipeline/stage9_rfinal_forecast.py"
+arguments = [
+  "prepare",
+  "--source-stage4", "{artifacts}/runs/2223_stage4_phenology/results",
+  "--target-stage4", "{artifacts}/runs/2324_stage4_phenology/results",
+  "--out", "{artifacts}/runs/2324_rfinal_forecast/dataset",
+]

@@ -260,7 +260,16 @@ def glcm_window_features(img, mask, windows=(3, 5, 7), levels=8, offsets=((0, 1)
 def glcm_window_maps(img, mask, w, levels=8, offsets=((0, 1), (1, 0))):
     """Mapas GLCM por pixel (tamanho da imagem), média sobre offsets. Para visualização."""
     q = _quantize(img, mask, levels)
-    H, W = img.shape
+    return glcm_window_maps_quantized(q, mask, w, levels=levels, offsets=offsets)
+
+
+def glcm_window_maps_quantized(q, mask, w, levels=8, offsets=((0, 1), (1, 0))):
+    """Mapas GLCM a partir de uma imagem já quantizada.
+
+    Permite aplicar limites de quantização globais quando a imagem é processada em
+    blocos, sem alterar a semântica de :func:`glcm_window_maps`.
+    """
+    H, W = q.shape
     acc = {n: np.zeros((H, W)) for n in GLCM_NAMES}
     cnt = np.zeros((H, W))
     for dy, dx in offsets:

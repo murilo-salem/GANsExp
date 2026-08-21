@@ -1,0 +1,22 @@
+[experiment]
+run_id = "2526_stage4_phenology"
+season = "2025_2026"
+validation_unit = "parcela"
+
+[inputs]
+v10 = "{data}/raw/safra_2025_2026/orthomosaics/12.12.2025/Milho_12.12.2025_comsensor_mosaico.tif"
+v13 = "{data}/raw/safra_2025_2026/orthomosaics/23.12.2025_voo regular (30m)/Milho_23.12.2025_comsensor_vooregular_mosaico_modificado.tif"
+r1 = "{data}/raw/safra_2025_2026/orthomosaics/14.01.2026/milho_14_01_2026_com_sensor_mosaico_modificado.tif"
+parcels = "{data}/raw/safra_2025_2026/geometry/parecelas_milho.shp"
+workbook = "{data}/raw/safra_2025_2026/field/PLANILHA_VOOS REGULARES_COM SENSOR.xlsx"
+
+[execution]
+entrypoint = "{root}/code/pipeline/stage4_2526.py"
+arguments = [
+  "--v10", "{data}/raw/safra_2025_2026/orthomosaics/12.12.2025/Milho_12.12.2025_comsensor_mosaico.tif",
+  "--v13", "{data}/raw/safra_2025_2026/orthomosaics/23.12.2025_voo regular (30m)/Milho_23.12.2025_comsensor_vooregular_mosaico_modificado.tif",
+  "--r1", "{data}/raw/safra_2025_2026/orthomosaics/14.01.2026/milho_14_01_2026_com_sensor_mosaico_modificado.tif",
+  "--shapefile", "{data}/raw/safra_2025_2026/geometry/parecelas_milho.shp",
+  "--workbook", "{data}/raw/safra_2025_2026/field/PLANILHA_VOOS REGULARES_COM SENSOR.xlsx",
+  "--out", "{artifacts}/runs/2526_stage4_phenology/results",
+]

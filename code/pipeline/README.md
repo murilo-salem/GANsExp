@@ -1,5 +1,8 @@
 # Pipeline milho — etapas 4–8 do diagrama (safras 2023/24 e 2022/23)
 
+> Migração em curso: novos experimentos devem usar `configs/` + `scripts/abc_run.py` na raiz.
+> Este diretório mantém os CLIs compatíveis e os resultados históricos; veja `docs/MIGRATION.md`.
+
 > ⚠️ **Números oficiais/honestos em [`RESULTS_STATUS.md`](RESULTS_STATUS.md).** Alguns resultados
 > abaixo estão otimistas: Produtividade estável é ~**0.44** (pooled), não 0.30; a etapa 8 tem
 > **R² negativo** (proof-of-mechanism); mais épocas de GAN não melhoram (teto em ~2000).
@@ -20,13 +23,25 @@ Lê o ortomosaico GeoTIFF via `tifffile` + geotransform (ModelPixelScale/Tiepoin
 UTM→pixel e recorta parcelas do shapefile. Índices RRENIR (NDVI/NDRE/CIrededge/SAVI) e mapa de
 clorofila (proxy CIrededge). CRS: EPSG:31982.
 
+## Tensores RGB + textura por mosaico — `build_rgb_texture_tensors.py`
+Gera um Zarr espacial por mosaico elegível, com 22 canais: `R,G,B`, `VARI,ExG,GLI,TGI` e os
+mapas GLCM de luminância (`asm`, `contrast`, `entropy`, `correlation`, `homogeneity`) nas janelas
+3/5/7. A execução é em blocos, preserva a geometria no manifesto e não carrega o mosaico inteiro.
+
+```bash
+python3 scripts/abc_run.py --config configs/analysis/rgb_texture_tensors.toml --check-inputs
+```
+
+São incluídos V8/V11/V18/R2/R5 de 22/23 e V13/R1 de 25/26. A safra 23/24 e V10 de 25/26 são
+registrados como excluídos porque não têm RGB físico completo.
+
 ## Etapa 4 — Divisão por estágio fenológico — `stage4_phenology.py`
 Recorta cada parcela de cada orto e classifica: `V6/V8/V13`→**vegetativo**, `R2/R5`→**reprodutivo**.
 ```bash
 python3 code/pipeline/stage4_phenology.py \
-  --ortho-dir "data/Safra2023a2024/Ortomosaicos" \
-  --shapefile "data/Safra2023a2024/Shapefile/Shape_parcelas23_24.shp" \
-  --out code/pipeline/out/stage4_2324 --size 256
+  --ortho-dir "data/raw/safra_2023_2024/orthomosaics" \
+  --shapefile "data/raw/safra_2023_2024/geometry/Shape_parcelas23_24.shp" \
+  --out artifacts/runs/2324_stage4_phenology/results --size 256
 ```
 Saída: `manifest.csv` (120 recortes = 24 parcelas × 5 estágios), `npy/`, `vegetativo/`, `reprodutivo/`.
 Sinal fenológico validado (NDVI médio): V6 0.37 → V8 0.62 → V13 0.69 → R2 0.71 → R5 0.61.
@@ -38,24 +53,25 @@ Realiza a GAN do diagrama: **entrada = estágio vegetativo + mapa de clorofila (
 1. Montar pares alinhados (split por parcela, sem vazamento):
 ```bash
 python3 code/pipeline/stage5_make_pairs.py \
-  --stage4 code/pipeline/out/stage4_2324 \
-  --out pytorch-CycleGAN-and-pix2pix/datasets/pheno_2324 \
+  --stage4 artifacts/archive/legacy/pipeline/stage4_2324 \
+  --out artifacts/archive/legacy/gan/datasets/pheno_2324 \
   --veg V8 V13 --rep R2 R5 --val-blocos 4      # 96 pares: 72 treino / 24 val
 ```
 2. Treinar (dataset `phenology`, `input_nc=7/output_nc=3` definidos pelo próprio dataset):
 ```bash
 cd pytorch-CycleGAN-and-pix2pix
-WANDB_MODE=disabled python3 train.py --dataroot datasets/pheno_2324 --name pheno_2324 \
+WANDB_MODE=disabled python3 train.py --dataroot ../artifacts/archive/legacy/gan/datasets/pheno_2324 --name pheno_2324 \
   --model pix2pix --dataset_mode phenology --direction AtoB \
   --load_size 286 --crop_size 256 --batch_size 4 \
-  --n_epochs 150 --n_epochs_decay 50 --no_html
+  --n_epochs 150 --n_epochs_decay 50 --no_html \
+  --checkpoints_dir ../artifacts/runs/2324_pheno_gan/checkpoints
 ```
 3. Inferir + validar quantitativamente (painel `veg | sintético | real`, L1 e ΔNDVI):
 ```bash
 python3 code/pipeline/stage5_infer.py \
-  --dataroot pytorch-CycleGAN-and-pix2pix/datasets/pheno_2324 --phase val \
-  --ckpt pytorch-CycleGAN-and-pix2pix/checkpoints/pheno_2324/latest_net_G.pth \
-  --out code/pipeline/out/stage5_infer
+  --dataroot artifacts/archive/legacy/gan/datasets/pheno_2324 --phase val \
+  --ckpt artifacts/archive/legacy/gan/checkpoints/pheno_2324/latest_net_G.pth \
+  --out artifacts/runs/2324_stage5_infer/results
 ```
 Arquivos: `data/phenology_dataset.py` (dataset condicional). Smoke-test de 2 épocas já validou a
 fiação (G_L1 41.5→19.8). **Nota:** com só 24 parcelas o volume é pequeno — os pares V×R e o
@@ -65,12 +81,13 @@ tiling/augmentation ajudam, mas é um proof-of-mechanism; para resultado public�
 Para testar se mais épocas melhoram a geração, treinos 2000+2000 (lr cheio 1–2000, decaimento
 linear 2001–4000), `save_epoch_freq=500`, ~0.28 s/época em RTX 5090 (~20 min total):
 ```bash
-WANDB_MODE=disabled python3 train.py --dataroot datasets/pheno_2324 --name pheno_2324_4k \
+WANDB_MODE=disabled python3 train.py --dataroot ../artifacts/archive/legacy/gan/datasets/pheno_2324 --name pheno_2324_4k \
   --model pix2pix --dataset_mode phenology --direction AtoB \
   --load_size 286 --crop_size 256 --batch_size 4 \
-  --n_epochs 2000 --n_epochs_decay 2000 --no_html --save_epoch_freq 500
+  --n_epochs 2000 --n_epochs_decay 2000 --no_html --save_epoch_freq 500 \
+  --checkpoints_dir ../artifacts/runs/2324_pheno_gan_4k/checkpoints
 ```
-Inferência por checkpoint: `--ckpt checkpoints/pheno_2324_4k/{2000,4000}_net_G.pth`.
+Inferência por checkpoint: `--ckpt artifacts/runs/2324_pheno_gan_4k/checkpoints/pheno_2324_4k/{2000,4000}_net_G.pth`.
 
 **Resultado — platô em ~2000 épocas (validação, 24 pares):**
 | Checkpoint | L1 | \|ΔNDVI\| | vs baseline 200-ép |
@@ -92,13 +109,13 @@ também os atributos físicos de campo como X** (`phys_CHL_total`, `phys_N_perce
 `phys_N_acumulado`) — realiza o "clorofila (físico)" do diagrama etapa 6.
 ```bash
 python3 code/pipeline/stage6_features_ortho.py \
-  --ortho-dir "data/Safra2023a2024/Ortomosaicos" \
-  --shapefile "data/Safra2023a2024/Shapefile/Shape_parcelas23_24.shp" \
-  --table "data/Safra2023a2024/Tabela de dados/parametros_2324_normalizado.xlsx" \
-  --out code/pipeline/out/plsr_2324
+  --ortho-dir "data/raw/safra_2023_2024/orthomosaics" \
+  --shapefile "data/raw/safra_2023_2024/geometry/Shape_parcelas23_24.shp" \
+  --table "data/raw/safra_2023_2024/field/parametros_2324_normalizado.xlsx" \
+  --out artifacts/runs/2324_features_ortho/results
 cd code/analysis && python3 plsr_kfold.py \
-  --features ../pipeline/out/plsr_2324/features_ortho_2324.csv \
-  --target-csv ../pipeline/out/plsr_2324/targets_ortho_2324.csv \
+  --features ../../artifacts/runs/2324_features_ortho/results/features_ortho_2324.csv \
+  --target-csv ../../artifacts/runs/2324_features_ortho/results/targets_ortho_2324.csv \
   --join sample --target-col Biomassa --block texture+physical --group parcela
 ```
 `--group parcela` usa **GroupKFold** (novo): sem ele, o alvo repetido entre estágios da mesma
@@ -129,6 +146,21 @@ Maximal Correlation Coefficient, Dissimilarity, Inertia, Cluster Shade, Cluster 
 `all` soma colinearidade + preditores físicos co-medidos → R² inflado. Use bloco físico `texture`
 e cap de componentes (`--max-comp 8`), ou seleção VIP (`band_selection.py`). Científico: `physical`
 não é sensoriamento remoto puro (CHL/N vêm de campo) — útil como ceiling de referência.
+
+### Produtividade com GAN por fold — `stage8_gan_fusion_cv.py`
+O experimento pré-colheita robusto usa uma GAN treinada novamente para cada bloco externo e compara
+vegetativo real, reprodutivo sintético e a fusão dos dois, sempre com a dose de N. O modelo de
+produtividade e a seleção de atributos ficam restritos aos outros três blocos.
+```bash
+python3 code/pipeline/stage8_gan_fusion_cv.py \
+  --stage4 artifacts/archive/legacy/pipeline/stage4_2324 \
+  --table "data/raw/safra_2023_2024/field/parametros_2324_normalizado.xlsx" \
+  --ckpt-dir artifacts/archive/legacy/gan/checkpoints \
+  --out artifacts/runs/2324_ganfusion_cv/results
+```
+Na execução atual (24 parcelas; 4 folds), Extra Trees com **vegetativo+dose** obteve R² OOF 0.791;
+a fusão GAN obteve 0.724 e GAN+dose isolada 0.362. Assim, a GAN foi usada e validada, mas ainda não
+agrega valor preditivo à produtividade nesta safra. Consulte o `REPORT.md` do diretório de saída.
 
 ---
 
@@ -175,3 +207,91 @@ Etapas 1–8 implementadas e rodando ponta-a-ponta em 22/23+23/24. A lacuna da *
 (24–48 parcelas) ⇒ GAN e etapa 8 são proof-of-mechanism; bloco `all`/muitos componentes no
 PLSR inflacionam R² (use `texture`/VIP + `--group parcela`; o anti-vazamento já remove o alvo
 de X). `physical` usa preditores de campo co-medidos → ceiling de referência, não RS puro.
+
+## Projeção causal R2 → R5 em 23/24 — `stage9_rfinal_forecast.py`
+
+### Variante residual orientada a biomassa — `stage10_residual_gan.py`
+
+Para testar ganho incremental sobre R2, recrie os recortes com máscara da parcela e
+escala única por voo; a GAN prevê o delta R2→R5 e recebe uma perda auxiliar de
+Δbiomassa apenas em 22/23.
+
+```bash
+python3 code/pipeline/stage4_phenology.py --ortho-dir data/raw/safra_2022_2023/orthomosaics \
+  --shapefile data/raw/safra_2022_2023/geometry/Shape_parcelas_2223.shp \
+  --out artifacts/runs/2223_stage4_residual/results --reflectance-scale mosaic
+python3 code/pipeline/stage10_residual_gan.py train \
+  --source-stage4 artifacts/runs/2223_stage4_residual/results \
+  --source-table data/raw/safra_2022_2023/field/parametros_2223_normalizado.xlsx \
+  --out artifacts/runs/2324_residual_gan/checkpoint
+```
+
+O experimento de previsão antecipada usa pares R2→R5 e biomassa R5 apenas da safra
+22/23. Em 23/24, somente R2 é disponibilizado às três adaptações (``stats_aug``,
+``dann`` e ``cyclegan``); R5 real é lido exclusivamente no comando de avaliação.
+
+```bash
+python3 scripts/abc_run.py --config configs/safras/2223_stage4.toml
+python3 scripts/abc_run.py --config configs/safras/2324_stage4.toml
+python3 code/pipeline/stage9_rfinal_forecast.py prepare \
+  --source-stage4 artifacts/runs/2223_stage4_phenology/results \
+  --target-stage4 artifacts/runs/2324_stage4_phenology/results \
+  --out artifacts/runs/2324_rfinal_forecast/dataset
+
+for method in stats_aug dann cyclegan; do
+  python3 code/pipeline/stage9_rfinal_forecast.py train --dataset artifacts/runs/2324_rfinal_forecast/dataset \
+    --method "$method" --out "artifacts/runs/2324_rfinal_forecast/$method/checkpoint"
+  python3 code/pipeline/stage9_rfinal_forecast.py predict --dataset artifacts/runs/2324_rfinal_forecast/dataset \
+    --method "$method" --checkpoint "artifacts/runs/2324_rfinal_forecast/$method/checkpoint" \
+    --out "artifacts/runs/2324_rfinal_forecast/$method/predictions"
+  python3 code/pipeline/stage9_rfinal_forecast.py evaluate --dataset artifacts/runs/2324_rfinal_forecast/dataset \
+    --predictions "artifacts/runs/2324_rfinal_forecast/$method/predictions" \
+    --source-table data/raw/safra_2022_2023/field/parametros_2223_normalizado.xlsx \
+    --target-table data/raw/safra_2023_2024/field/parametros_2324_normalizado.xlsx \
+    --out "artifacts/runs/2324_rfinal_forecast/$method/evaluation"
+done
+```
+
+Para a discussão como **calibração local R5**, fixe `stats_aug` antes de abrir as
+predições e calibre a escala do PLSR em três blocos, avaliando o quarto:
+
+```bash
+python3 code/pipeline/stage9_rfinal_forecast.py calibrate \
+  --predictions artifacts/runs/2324_rfinal_forecast/stats_aug/evaluation/predicoes_parcela.csv \
+  --method stats_aug \
+  --out artifacts/runs/2324_rfinal_forecast/stats_aug/calibration_local_r5
+```
+
+O resultado é OOF por bloco (18 parcelas de calibração, 6 de teste); não deve ser
+apresentado como transferência cross-safra sem biomassa local.
+
+## Safra 2025/26 — extensão multiespectral/GAN
+
+A safra 2025/26 adiciona 40 parcelas, ortomosaicos em **V10** (12/12, 4 bandas
+`B,R,RE,NIR`), **V13** (23/12, 5 bandas `B,G,R,RE,NIR`) e **R1** (14/01, 5 bandas).
+O pipeline novo reduz os voos ao núcleo comum `[Red, RedEdge, NIR]`, mantendo a GAN
+compatível com a arquitetura de três bandas. A planilha contém biomassa em V10 e
+clorofila laboratorial em V10/R1; altura e produtividade de colheita permanecem ausentes.
+
+```bash
+python3 code/pipeline/normalize_2526.py \
+  --workbook "data/raw/safra_2025_2026/field/PLANILHA_VOOS REGULARES_COM SENSOR.xlsx" \
+  --out artifacts/runs/2526_field_targets/results/field_targets.csv
+
+python3 code/pipeline/stage4_2526.py \
+  --v10 "data/raw/safra_2025_2026/orthomosaics/12.12.2025/Milho_12.12.2025_comsensor_mosaico.tif" \
+  --v13 "data/raw/safra_2025_2026/orthomosaics/23.12.2025_voo regular (30m)/Milho_23.12.2025_comsensor_vooregular_mosaico_modificado.tif" \
+  --r1 "data/raw/safra_2025_2026/orthomosaics/14.01.2026/milho_14_01_2026_com_sensor_mosaico_modificado.tif" \
+  --shapefile "data/raw/safra_2025_2026/geometry/parecelas_milho.shp" \
+  --workbook "data/raw/safra_2025_2026/field/PLANILHA_VOOS REGULARES_COM SENSOR.xlsx" \
+  --out artifacts/runs/2526_stage4_phenology/results
+
+python3 code/pipeline/stage5_make_pairs.py \
+  --stage4 artifacts/runs/2526_stage4_phenology/results \
+  --out artifacts/runs/2526_pheno_gan/dataset \
+  --veg V10 V13 --rep R1 --val-blocos 4
+```
+
+Após o treino, passe `--pairs .../pairs.csv` a `stage5_infer.py` para obter métricas
+por par **e por parcela**. `stage8_2526.py` treina em R1 real e avalia CHL_total em
+10 parcelas de validação, agregando os pares V10 e V13 antes das métricas.

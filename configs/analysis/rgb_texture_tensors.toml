@@ -1,0 +1,14 @@
+[experiment]
+run_id = "rgb_texture_tensors"
+description = "Tensores RGB + índices RGB + mapas GLCM densos por ortomosaico"
+
+[inputs]
+data = "{data}/raw"
+
+[execution]
+entrypoint = "{root}/code/pipeline/build_rgb_texture_tensors.py"
+arguments = [
+  "--data-dir", "{data}",
+  "--out", "{artifacts}/runs/rgb_texture_tensors/results",
+  "--chunk", "512",
+]

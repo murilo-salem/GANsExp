@@ -1,0 +1,41 @@
+from __future__ import annotations
+
+from typing import Optional
+
+from office365.directory.extensions.extension import Extension
+from office365.entity import Entity
+from office365.entity_collection import EntityCollection
+from office365.runtime.paths.resource_path import ResourcePath
+from office365.todo.tasks.collection import TodoTaskCollection
+
+
+class TodoTaskList(Entity):
+    """A list in Microsoft To Do that contains one or more todoTask resources."""
+
+    def __str__(self) -> str:
+        return self.display_name or self.entity_type_name or ""
+
+    @property
+    def display_name(self) -> Optional[str]:
+        """The name of the task list."""
+        return self.properties.get("displayName", None)
+
+    @property
+    def extensions(self) -> EntityCollection[Extension]:
+        """The collection of open extensions defined for the task list."""
+        return self.properties.get(
+            "extensions",
+            EntityCollection(self.context, Extension, ResourcePath("extensions", self.resource_path)),
+        )
+
+    @property
+    def tasks(self) -> TodoTaskCollection:
+        """The tasks in this task list."""
+        return self.properties.get(
+            "tasks",
+            TodoTaskCollection(self.context, ResourcePath("tasks", self.resource_path)),
+        )
+
+    @property
+    def entity_type_name(self) -> str:
+        return None  # type: ignore

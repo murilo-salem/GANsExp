@@ -1,0 +1,9 @@
+from office365.sharepoint.multigeo.service.move_job_entity_data import MoveJobEntityData
+
+
+class SiteMoveJobEntityData(MoveJobEntityData):
+    """"""
+
+    @property
+    def entity_type_name(self):  # type: ignore[override]
+        return "Microsoft.Online.SharePoint.MultiGeo.Service.SiteMoveJobEntityData"

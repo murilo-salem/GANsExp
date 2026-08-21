@@ -15,10 +15,10 @@ Saídas:
 
 Uso:
     python3 code/pipeline/stage6_features_ortho.py \
-        --ortho-dir "data/Safra2023a2024/Ortomosaicos" \
-        --shapefile "data/Safra2023a2024/Shapefile/Shape_parcelas23_24.shp" \
-        --table "data/Safra2023a2024/Tabela de dados/parametros_2324_normalizado.xlsx" \
-        --out code/pipeline/out/plsr_2324
+        --ortho-dir "data/raw/safra_2023_2024/orthomosaics" \
+        --shapefile "data/raw/safra_2023_2024/geometry/Shape_parcelas23_24.shp" \
+        --table "data/raw/safra_2023_2024/field/parametros_2324_normalizado.xlsx" \
+        --out artifacts/runs/2324_features_ortho/results
 Depois:
     cd code/analysis && python3 plsr_kfold.py \
         --features ../pipeline/out/plsr_2324/features_ortho_2324.csv \

@@ -7,8 +7,8 @@ projeto estão em SIRGAS 2000 / UTM 22S (EPSG:31982), então parcelas e orto com
 e o recorte por parcela é uma simples conversão UTM->pixel.
 
 Uso como biblioteca:
-    ortho = Ortho("data/Safra2023a2024/Ortomosaicos/RRENIR_R2_2023_2024.tif")
-    parcels = read_parcels("data/Safra2023a2024/Shapefile/Shape_parcelas23_24.shp")
+    ortho = Ortho("data/raw/safra_2023_2024/orthomosaics/RRENIR_R2_2023_2024.tif")
+    parcels = read_parcels("data/raw/safra_2023_2024/geometry/Shape_parcelas23_24.shp")
     crop = ortho.crop_bbox(parcels[0].bbox)     # (H, W, 3) uint16, bandas [Red, RedEdge, NIR]
 """
 from __future__ import annotations
@@ -176,7 +176,7 @@ def bands5_indices(refl5: np.ndarray, eps: float = 1e-8) -> dict:
 if __name__ == "__main__":
     import sys
 
-    base = Path("data/Safra2023a2024")
+    base = Path("data/raw/safra_2023_2024")
     shp = base / "Shapefile/Shape_parcelas23_24.shp"
     tif = base / "Ortomosaicos/RRENIR_R2_2023_2024.tif"
     parcels = read_parcels(shp)

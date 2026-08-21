@@ -5,6 +5,10 @@ Repo.zip
 pytorch-CycleGAN-and-pix2pix/
 models
 
+# Resultados reproduzíveis; manter apenas documentação e manifests selecionados no Git
+artifacts/runs/
+artifacts/archive/
+
 # Python
 __pycache__/
 *.pyc

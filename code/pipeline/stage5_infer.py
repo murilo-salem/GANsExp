@@ -7,9 +7,9 @@ o erro (L1 e erro de NDVI médio) contra o reprodutivo real — validação quan
 
 Uso:
     python3 code/pipeline/stage5_infer.py \
-        --dataroot pytorch-CycleGAN-and-pix2pix/datasets/pheno_2324 --phase val \
-        --ckpt pytorch-CycleGAN-and-pix2pix/checkpoints/pheno_2324/latest_net_G.pth \
-        --out code/pipeline/out/stage5_infer
+        --dataroot artifacts/archive/legacy/gan/datasets/pheno_2324 --phase val \
+        --ckpt artifacts/archive/legacy/gan/checkpoints/pheno_2324/latest_net_G.pth \
+        --out artifacts/runs/2324_stage5_infer/results
 """
 from __future__ import annotations
 
@@ -18,6 +18,7 @@ import sys
 from pathlib import Path
 
 import numpy as np
+import pandas as pd
 import torch
 from PIL import Image
 
@@ -51,6 +52,7 @@ def main():
     ap.add_argument("--ngf", type=int, default=64)
     ap.add_argument("--netG", default="unet_256")
     ap.add_argument("--norm", default="batch")
+    ap.add_argument("--pairs", help="pairs.csv; quando informado, agrega métricas por parcela")
     args = ap.parse_args()
 
     dev = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
@@ -63,7 +65,7 @@ def main():
     tg_dir = Path(args.dataroot) / args.phase / "target"
     out = Path(args.out); out.mkdir(parents=True, exist_ok=True)
 
-    l1s, ndvi_errs = [], []
+    pair_rows = []
     for p in sorted(in_dir.glob("*.npy")):
         veg = np.load(p).astype(np.float32)                 # (H,W,3) [0,1]
         rep = np.load(tg_dir / p.name).astype(np.float32)
@@ -73,16 +75,30 @@ def main():
             fake = G(t)[0].permute(1, 2, 0).cpu().numpy()    # [-1,1]
         fake = np.clip((fake + 1) / 2, 0, 1)                 # -> [0,1]
 
-        l1s.append(float(np.mean(np.abs(fake - rep))))
-        ndvi_errs.append(float(np.abs(np.mean(ndvi(fake)) - np.mean(ndvi(rep)))))
+        pair_rows.append({
+            "pair": p.stem,
+            "l1": float(np.mean(np.abs(fake - rep))),
+            "ndvi_error": float(np.abs(np.mean(ndvi(fake)) - np.mean(ndvi(rep)))),
+        })
 
         panel = np.concatenate([false_color(veg), false_color(fake), false_color(rep)], axis=1)
         Image.fromarray(panel).save(out / f"{p.stem}.png")
         np.save(out / f"{p.stem}_fake.npy", fake.astype(np.float32))
 
-    print(f"== inferência: {len(l1s)} pares  (painel = veg | sintético | real)")
-    print(f"   L1 médio (sintético vs real)   = {np.mean(l1s):.4f}")
-    print(f"   |ΔNDVI| médio (sintético-real)  = {np.mean(ndvi_errs):.4f}")
+    metrics = pd.DataFrame(pair_rows)
+    if args.pairs:
+        pairs = pd.read_csv(args.pairs)
+        metrics = metrics.merge(pairs[["pair", "fid", "bloco", "veg", "rep"]], on="pair",
+                                how="left", validate="one_to_one")
+    metrics.to_csv(out / "metrics_pairs.csv", index=False)
+    print(f"== inferência: {len(metrics)} pares  (painel = veg | sintético | real)")
+    print(f"   L1 médio (sintético vs real)   = {metrics.l1.mean():.4f}")
+    print(f"   |ΔNDVI| médio (sintético-real)  = {metrics.ndvi_error.mean():.4f}")
+    if "fid" in metrics and metrics.fid.notna().any():
+        by_parcel = metrics.groupby("fid", as_index=False)[["l1", "ndvi_error"]].mean()
+        by_parcel.to_csv(out / "metrics_parcelas.csv", index=False)
+        print(f"   por parcela independente: {len(by_parcel)} | L1={by_parcel.l1.mean():.4f} | "
+              f"|ΔNDVI|={by_parcel.ndvi_error.mean():.4f}")
     print(f"   painéis + .npy -> {out}")
 
 

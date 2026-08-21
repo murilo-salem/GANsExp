@@ -8,11 +8,11 @@
 
 Uso:
     python3 code/pipeline/stage_multisafra.py \
-        --feat2223 code/pipeline/out/band5_2223/features_5band_2223.csv \
-        --table2223 "data/Safra2022a2023/tabela de dados/parametros_2223_normalizado.xlsx" \
-        --feat2324 code/pipeline/out/plsr_2324/features_ortho_2324.csv \
-        --tgt2324  code/pipeline/out/plsr_2324/targets_ortho_2324.csv \
-        --target Biomassa --out code/pipeline/out/multisafra
+        --feat2223 artifacts/archive/legacy/pipeline/band5_2223/features_5band_2223.csv \
+        --table2223 "data/raw/safra_2022_2023/field/parametros_2223_normalizado.xlsx" \
+        --feat2324 artifacts/archive/legacy/pipeline/plsr_2324/features_ortho_2324.csv \
+        --tgt2324  artifacts/archive/legacy/pipeline/plsr_2324/targets_ortho_2324.csv \
+        --target Biomassa --out artifacts/runs/2324_multisafra_biomassa/results
 """
 from __future__ import annotations
 

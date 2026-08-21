@@ -13,11 +13,11 @@ stage6_features_ortho, e o alvo da tabela normalizada.
 
 Uso:
     python3 code/pipeline/stage8_scenarios.py \
-        --stage4 code/pipeline/out/stage4_2324 \
-        --pairs pytorch-CycleGAN-and-pix2pix/datasets/pheno_2324/pairs.csv \
-        --ckpt pytorch-CycleGAN-and-pix2pix/checkpoints/pheno_2324/latest_net_G.pth \
-        --table "data/Safra2023a2024/Tabela de dados/parametros_2324_normalizado.xlsx" \
-        --target Biomassa --out code/pipeline/out/stage8_2324
+        --stage4 artifacts/archive/legacy/pipeline/stage4_2324 \
+        --pairs artifacts/archive/legacy/gan/datasets/pheno_2324/pairs.csv \
+        --ckpt artifacts/archive/legacy/gan/checkpoints/pheno_2324/latest_net_G.pth \
+        --table "data/raw/safra_2023_2024/field/parametros_2324_normalizado.xlsx" \
+        --target Biomassa --out artifacts/runs/2324_stage8_scenarios/results
 """
 from __future__ import annotations
 
@@ -137,21 +137,34 @@ def main():
         Image.fromarray(panel).save(out / "paineis" / f"{pr.pair}.png")
 
     df = pd.DataFrame(rows)
+    if df.empty:
+        raise ValueError("nenhum par de validação possui alvo medido")
     df.to_csv(out / f"scenarios_{ycol}.csv", index=False)
+    # V8/V13 × R2/R5 são quatro projeções da mesma parcela; agregá-las antes de
+    # medir Y evita contar uma produtividade de colheita quatro vezes.
+    by_parcel = df.groupby("fid", as_index=False).agg(
+        y_meas=("y_meas", "first"),
+        y_pred_real=("y_pred_real", "mean"),
+        y_pred_synth=("y_pred_synth", "mean"),
+        l1_img=("l1_img", "mean"),
+        pairs=("pair", "count"),
+    )
+    by_parcel.to_csv(out / f"scenarios_{ycol}_parcelas.csv", index=False)
 
-    m_syn = metrics(df.y_meas.values, df.y_pred_synth.values)
-    m_rl = metrics(df.y_meas.values, df.y_pred_real.values)
+    m_syn = metrics(by_parcel.y_meas.values, by_parcel.y_pred_synth.values)
+    m_rl = metrics(by_parcel.y_meas.values, by_parcel.y_pred_real.values)
     lines = [
         "=== ETAPA 8 — CENÁRIOS (projeção veg->GAN->reprodutivo sintético->PLSR) ===",
-        f"Alvo: {ycol}  |  parcelas de validação: {len(df)}",
-        f"Erro de imagem sintético vs real (L1): {df.l1_img.mean():.4f}",
+        f"Alvo: {ycol}  |  parcelas de validação: {len(by_parcel)} ({len(df)} pares)",
+        f"Erro de imagem sintético vs real (L1, média por parcela): {by_parcel.l1_img.mean():.4f}",
         "",
         "Predição do Y medido a partir de:",
         f"  REPRODUTIVO REAL     -> R²={m_rl['R2']:.3f}  RMSE={m_rl['RMSE']:.2f}  RPD={m_rl['RPD']:.2f}",
         f"  REPRODUTIVO SINTÉTICO-> R²={m_syn['R2']:.3f}  RMSE={m_syn['RMSE']:.2f}  RPD={m_syn['RPD']:.2f}",
         "",
-        f"Gap de predição (sintético vs real): "
-        f"MAE={np.mean(np.abs(df.y_pred_synth - df.y_pred_real)):.2f}",
+        f"Gap de predição (sintético vs real, por parcela): "
+        f"MAE={np.mean(np.abs(by_parcel.y_pred_synth - by_parcel.y_pred_real)):.2f}",
+        "Unidade independente: parcela; pares V8/V13 × R2/R5 foram agregados antes das métricas.",
     ]
     report = "\n".join(lines)
     print("\n" + report)

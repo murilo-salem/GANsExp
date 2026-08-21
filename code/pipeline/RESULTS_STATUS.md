@@ -60,21 +60,69 @@ domínio/dado (GSD/iluminação/sensor + poucas parcelas), não de modelagem.
 - **GAN — épocas**: teto já atingido. Doce spot **~2000 épocas** (L1 0.103, ΔNDVI 0.046);
   2000→4000 **não melhora** e o discriminador colapsa. Mais épocas/gerações **não ajudam**.
 
-## 4. O que continua bloqueado (precisa de dado novo, não de código)
+## 4. Situação dos bloqueios após a safra 2025/26
+
+Resolvidos por dados novos:
+
+- **Safra adicional:** 2025/26 tem 40 parcelas e três ortomosaicos fenológicos (V10, V13 e R1).
+- **Trilha hiperespectral:** há cubos Pika L em 12/12 (76 cubos BIL+HDR válidos) e 14/01
+  (79 válidos), além de clorofila laboratorial nas 40 parcelas nas duas datas.
+- **Y real para V10:** biomassa está preenchida para 38 das 40 parcelas em 12/12
+  (as parcelas 29 e 36 estão sem pesagem).
+
+Continuam bloqueados:
 
 - **Altura**: alvo nunca medido em nenhuma tabela.
-- **Safra 2024/25**: não adquirida.
-- **Trilha hiperespectral (300 bandas)**: cubos brutos ausentes de `data/`; `features_12dez.csv`
-  **sem coluna de Y** → PLSR só rodou com alvo sintético.
-- **GAN/etapa-8 publicáveis**: exigem mais parcelas (hoje 24–48).
+- **Produtividade de colheita:** não consta na planilha 2025/26; biomassa só está disponível em V10,
+  não em R1.
+- **GAN/etapa-8 publicáveis**: a nova validação ainda tem apenas 10 parcelas independentes.
+
+Os cubos inválidos de 12/12 (`5S` e `20M`) não têm header ENVI; 14/01 está completo.
+
+## 5. Produtividade com GAN re-treinada por fold (23/24)
+
+Foi executada a ressalva metodológica: para cada bloco externo (quatro blocos de seis parcelas),
+a GAN foi treinada sem aquele bloco, gerou R2/R5 sintético a partir de V8/V13 e somente então o
+modelo de produtividade foi ajustado nos outros três blocos. A seleção de atributos e
+hiperparâmetros é interna aos três blocos de treino. Logo, as 24 predições são OOF por parcela,
+sem reutilizar o bloco de teste.
+
+| Entrada + dose N | Melhor modelo | R² OOF | RMSE |
+|---|---|---:|---:|
+| Vegetativo real | Extra Trees | **0.791** | 914.9 |
+| Reprodutivo sintético GAN | Elastic Net | 0.362 | 1597.1 |
+| Vegetativo + sintético GAN | Extra Trees | 0.724 | 1051.4 |
+
+Conclusão: a GAN preserva algum sinal de produtividade, mas a fusão perde 0.067 R² frente ao
+vegetativo real. Portanto ela **não** é evidência de melhoria preditiva ainda. A saída auditável
+está em `out/stage8_2324_ganfusion_cv/` (`summary.csv` e `oof_predictions.csv`).
+
+## 6. Primeiro treino 2025/26 — V10/V13 → R1
+
+Execução inicial concluída em 200 épocas (150 com taxa fixa + 50 de decaimento), usando
+30 parcelas no treino e o bloco 4 inteiro como validação (10 parcelas; 20 pares, que foram
+agregados por parcela). Checkpoints 50/100/150/200 foram comparados no mesmo holdout:
+
+| Checkpoint | L1 médio por parcela | \|ΔNDVI\| médio |
+|---|---:|---:|
+| 50 | 0.1215 | 0.0122 |
+| 100 | 0.1223 | **0.0117** |
+| **150** | **0.1200** | 0.0154 |
+| 200 | 0.1213 | 0.0134 |
+
+O checkpoint 150 é o selecionado por L1. Por transição, V10→R1 teve L1=0.1214 e
+V13→R1 L1=0.1185. É uma boa aproximação de imagem/índice, mas **não demonstra predição
+agronômica**: no cenário de clorofila R1, o PLSR com R1 real teve R²=−0.212 e com R1
+sintético R²=−0.382 (10 parcelas; IC bootstrap amplo). O resultado correto é
+proof-of-mechanism da geração, não estimativa de clorofila publicável.
 
 ## Como reproduzir
 ```bash
 python3 code/pipeline/stage_multisafra.py \
-  --feat2223 code/pipeline/out/band5_2223/features_5band_2223.csv \
-  --table2223 "data/Safra2022a2023/tabela de dados/parametros_2223_normalizado.xlsx" \
-  --feat2324 code/pipeline/out/plsr_2324/features_ortho_2324.csv \
-  --tgt2324  code/pipeline/out/plsr_2324/targets_ortho_2324.csv \
-  --target Produtividade --out code/pipeline/out/multisafra
+  --feat2223 artifacts/archive/legacy/pipeline/band5_2223/features_5band_2223.csv \
+  --table2223 "data/raw/safra_2022_2023/field/parametros_2223_normalizado.xlsx" \
+  --feat2324 artifacts/archive/legacy/pipeline/plsr_2324/features_ortho_2324.csv \
+  --tgt2324  artifacts/archive/legacy/pipeline/plsr_2324/targets_ortho_2324.csv \
+  --target Produtividade --out artifacts/runs/2324_multisafra_produtividade/results
 ```
-Saída: `code/pipeline/out/multisafra/multisafra_<alvo>.txt` (within, cross baseline/+DA, pooled).
+Saída: `artifacts/runs/<run-id>/results/multisafra_<alvo>.txt` (within, cross baseline/+DA, pooled).

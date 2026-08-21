@@ -18,9 +18,9 @@ Saídas (em --out):
 
 Uso:
     python3 code/pipeline/stage4_phenology.py \
-        --ortho-dir "data/Safra2023a2024/Ortomosaicos" \
-        --shapefile "data/Safra2023a2024/Shapefile/Shape_parcelas23_24.shp" \
-        --out code/pipeline/out/stage4_2324 --size 256
+        --ortho-dir "data/raw/safra_2023_2024/orthomosaics" \
+        --shapefile "data/raw/safra_2023_2024/geometry/Shape_parcelas23_24.shp" \
+        --out artifacts/runs/2324_stage4_phenology/results --size 256
 """
 from __future__ import annotations
 
@@ -30,7 +30,7 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
-from PIL import Image
+from PIL import Image, ImageDraw
 
 from geo import Ortho, read_parcels, to_reflectance, rrenir_indices
 
@@ -72,6 +72,18 @@ def resize(arr: np.ndarray, size: int) -> np.ndarray:
     return out
 
 
+def parcel_mask(points: list, bbox: tuple[float, float, float, float], shape: tuple[int, int],
+                size: int) -> np.ndarray:
+    """Rasteriza a parcela no recorte; pixels externos não entram na GAN/GLCM."""
+    xmin, ymin, xmax, ymax = bbox
+    h, w = shape
+    xy = [((x - xmin) / (xmax - xmin + 1e-12) * (w - 1),
+           (ymax - y) / (ymax - ymin + 1e-12) * (h - 1)) for x, y in points]
+    im = Image.new("L", (w, h), 0)
+    ImageDraw.Draw(im).polygon(xy, fill=255)
+    return (np.asarray(im.resize((size, size), Image.Resampling.NEAREST)) > 0).astype(np.float32)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--ortho-dir", required=True)
@@ -79,10 +91,13 @@ def main():
     ap.add_argument("--out", required=True)
     ap.add_argument("--size", type=int, default=256)
     ap.add_argument("--pad-m", type=float, default=0.0, help="margem em metros no recorte")
+    ap.add_argument("--reflectance-scale", choices=("crop", "mosaic"), default="crop",
+                    help="crop preserva legado; mosaic usa um único p99.5 por voo")
     args = ap.parse_args()
 
     out = Path(args.out)
     (out / "npy").mkdir(parents=True, exist_ok=True)
+    (out / "mask").mkdir(parents=True, exist_ok=True)
     (out / "vegetativo").mkdir(parents=True, exist_ok=True)
     (out / "reprodutivo").mkdir(parents=True, exist_ok=True)
 
@@ -96,13 +111,23 @@ def main():
             print(f"[skip] {tif.name} (estágio '{stage}' fora das classes)")
             continue
         ortho = Ortho(tif)
+        mosaic_scale = float(np.percentile(ortho.read(), 99.5)) if args.reflectance_scale == "mosaic" else None
         print(f"[{stage:4s} -> {phase:11s}] {tif.name}  ({ortho.width}x{ortho.height})")
         for p in parcels:
             crop = ortho.crop_bbox(p.bbox, pad_m=args.pad_m)
-            refl = resize(to_reflectance(crop), args.size)
+            if mosaic_scale:
+                refl = np.clip(crop.astype(np.float32) / max(mosaic_scale, 1.0), 0, 1)
+            else:
+                refl = to_reflectance(crop)
+            # A bbox com margem é a referência do raster de máscara.
+            xmin, ymin, xmax, ymax = p.bbox
+            padded = (xmin-args.pad_m, ymin-args.pad_m, xmax+args.pad_m, ymax+args.pad_m)
+            mask = parcel_mask(p.points, padded, crop.shape[:2], args.size)
+            refl = resize(refl, args.size) * mask[..., None]
             idx = rrenir_indices(refl)
             tag = f"{stage}__p{p.fid:02d}_d{p.dose_n}_b{p.bloco}"
             np.save(out / "npy" / f"{tag}.npy", refl.astype(np.float32))
+            np.save(out / "mask" / f"{tag}.npy", mask)
             Image.fromarray(false_color(refl)).save(out / phase / f"{tag}.png")
             rows.append(dict(
                 safra=tif.name.split("_")[-2] + "_" + tif.name.split("_")[-1].split(".")[0],
@@ -111,6 +136,9 @@ def main():
                 ndre_mean=round(float(np.nanmean(idx["NDRE"])), 4),
                 cire_mean=round(float(np.nanmean(idx["CIrededge"])), 4),
                 npy=str((out / "npy" / f"{tag}.npy").relative_to(out)),
+                mask=str((out / "mask" / f"{tag}.npy").relative_to(out)),
+                reflectance_scale=args.reflectance_scale,
+                mosaic_p995=mosaic_scale,
                 png=str((out / phase / f"{tag}.png").relative_to(out)),
                 tag=tag,
             ))

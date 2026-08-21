@@ -15,13 +15,14 @@ treino — não precisa materializar aqui. Split treino/val é por PARCELA (evit
 
 Uso:
     python3 code/pipeline/stage5_make_pairs.py \
-        --stage4 code/pipeline/out/stage4_2324 \
-        --out    pytorch-CycleGAN-and-pix2pix/datasets/pheno_2324 \
+        --stage4 artifacts/archive/legacy/pipeline/stage4_2324 \
+        --out    artifacts/runs/2324_pheno_gan/dataset \
         --veg V8 V13 --rep R2 R5 --val-blocos 4
 """
 from __future__ import annotations
 
 import argparse
+import re
 import shutil
 from pathlib import Path
 
@@ -37,6 +38,8 @@ def main():
     ap.add_argument("--rep", nargs="+", default=["R2", "R5"])
     ap.add_argument("--val-blocos", type=int, default=4,
                     help="parcelas com Bloco>=este valor vão p/ validação")
+    ap.add_argument("--val-bloco", type=int,
+                    help="bloco exato de validação; substitui --val-blocos e habilita CV por bloco")
     args = ap.parse_args()
 
     s4 = Path(args.stage4)
@@ -57,13 +60,17 @@ def main():
     for fid in fids:
         # bloco da parcela (constante entre estágios)
         sub = man[man.fid == fid].iloc[0]
-        split = "val" if int(sub.bloco) >= args.val_blocos else "train"
+        split = "val" if (int(sub.bloco) == args.val_bloco if args.val_bloco is not None
+                           else int(sub.bloco) >= args.val_blocos) else "train"
         for vs in sorted(veg):
             for rs in sorted(rep):
                 a = by.get((fid, vs)); b = by.get((fid, rs))
                 if a is None or b is None:
                     continue
-                pair = f"p{fid:02d}_{vs}to{rs}_d{sub.dose_n}_b{sub.bloco}"
+                # Metadados de campo podem conter '/', espaços e acentos (ex.: "90 kg N/ha").
+                # O identificador do par também é um nome de arquivo, portanto precisa ser portátil.
+                dose_tag = re.sub(r"[^A-Za-z0-9._-]+", "-", str(sub.dose_n)).strip("-")
+                pair = f"p{fid:02d}_{vs}to{rs}_d{dose_tag}_b{sub.bloco}"
                 shutil.copy(s4 / a.npy, out / split / "input" / f"{pair}.npy")
                 shutil.copy(s4 / b.npy, out / split / "target" / f"{pair}.npy")
                 rows.append(dict(pair=pair, split=split, fid=fid, dose_n=sub.dose_n,

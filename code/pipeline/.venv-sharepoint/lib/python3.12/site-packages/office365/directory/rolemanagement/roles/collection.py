@@ -1,0 +1,66 @@
+from __future__ import annotations
+
+from typing_extensions import Self
+
+from office365.delta_collection import DeltaCollection
+from office365.directory.rolemanagement.roles.role import DirectoryRole
+from office365.directory.rolemanagement.templates.collection import DirectoryRoleTemplateCollection
+from office365.directory.rolemanagement.templates.template import DirectoryRoleTemplate
+
+
+class DirectoryRoleCollection(DeltaCollection[DirectoryRole]):
+    """User's collection"""
+
+    def __init__(self, context, resource_path=None):
+        super().__init__(context, DirectoryRole, resource_path)
+
+    def get_by_name(self, name: str) -> DirectoryRole:
+        """Retrieve a directory role by its display name.
+
+        Args:
+            name (str): The display name (e.g. 'Security Administrator')
+        Returns:
+            The matching DirectoryRole
+        Raises:
+            NotFoundException: If no role matches
+            ValueError: If multiple roles match
+        """
+        return self.single(f"displayName eq '{name}'")
+
+    def assign(self, role_name: str) -> Self:
+        """Activate a directory role by display name.
+
+        Idempotent — if already activated, the server returns 409 Conflict.
+        The caller can catch and ignore it.
+
+        Args:
+            role_name (str): The display name (e.g. 'Security Administrator')
+        """
+
+        def _assign(templates: DirectoryRoleTemplateCollection) -> None:
+            template: DirectoryRoleTemplate | None = next((t for t in templates if t.display_name == role_name), None)
+            assert template is not None and template.id is not None
+            self.add(roleTemplateId=template.id)
+
+        self.context.directory_role_templates.get().after_execute(_assign)
+        return self
+
+    def revoke(self, role_name: str) -> Self:
+        """Deactivate a directory role by removing all members.
+
+        Directory roles are system-defined and cannot be deleted.
+        This removes all members, effectively deactivating the role.
+
+        Args:
+            role_name (str): The display name (e.g. 'Security Administrator')
+        """
+
+        def _get_members(role: DirectoryRole) -> None:
+            def _remove_members(members):
+                for member in members:
+                    role.members.remove(member)
+
+            role.members.get().after_execute(_remove_members)
+
+        self.get_by_name(role_name).after_execute(_get_members)
+        return self

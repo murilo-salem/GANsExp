@@ -16,9 +16,9 @@ radiométrica documentada). Gera, por parcela/estágio:
 
 Uso:
     python3 code/pipeline/build_5band.py \
-        --ortho-dir "data/Safra2022a2023/ortomosaico" \
-        --shapefile "data/Safra2022a2023/shapefile das parcelas/Shape_parcelas_2223.shp" \
-        --out code/pipeline/out/band5_2223 --safra 2223 --size 256
+        --ortho-dir "data/raw/safra_2022_2023/orthomosaics" \
+        --shapefile "data/raw/safra_2022_2023/geometry/Shape_parcelas_2223.shp" \
+        --out artifacts/runs/2223_band5/results --safra 2223 --size 256
 """
 from __future__ import annotations
 
