@@ -116,6 +116,33 @@ agronômica**: no cenário de clorofila R1, o PLSR com R1 real teve R²=−0.212
 sintético R²=−0.382 (10 parcelas; IC bootstrap amplo). O resultado correto é
 proof-of-mechanism da geração, não estimativa de clorofila publicável.
 
+## 7. Projeção antecipada R2 → R5 entre safras (22/23 → 23/24)
+
+O experimento `stage9_rfinal_forecast.py` treinou a projeção R2→R5 somente com 22/23 e manteve R5 de 23/24 bloqueado até a avaliação. Nenhuma das três adaptações transferiu uma estimativa de biomassa útil para 23/24:
+
+| Método | R² biomassa sintética | RMSE | L1 da imagem |
+|---|---:|---:|---:|
+| `stats_aug` | −3.424 | 10482.4 | **0.1062** |
+| DANN | −5.225 | 12434.2 | 0.1062 |
+| CycleGAN | −4.530 | 11719.4 | 0.1123 |
+
+Mesmo o R5 real passado pelo PLSR treinado em 22/23 teve R²=−0.014 em 23/24; portanto o problema dominante é a transferência de domínio, não apenas a geração de imagem. A calibração local OOF do `stats_aug` elevou o R² de −3.424 para **0.644** (RMSE=2973.6), mas usa biomassa de 18 parcelas para calibrar e prediz as 6 parcelas restantes por fold. É resultado de **calibração local R5**, não previsão remota em safra sem rótulos.
+
+## 8. GAN residual R2 → R5 orientada à biomassa
+
+Uma variante residual, treinada em 22/23 para prever a alteração R2→R5 com perda auxiliar de Δbiomassa, foi comparada em 23/24 ao baseline que usa R2 diretamente:
+
+| Cenário | R² | r | RMSE |
+|---|---:|---:|---:|
+| Baseline R2 | **0.724** | 0.851 | 2618.8 |
+| GAN residual | 0.624 | 0.793 | 3054.1 |
+
+O ΔR² é **−0.099**: a variante não atingiu o critério pré-definido de ganho (+0.05) e não deve substituir o baseline. Os quatro retreinos por fold foram concluídos depois deste relatório agregado; a avaliação OOF deve ser regenerada antes de qualquer atualização desta conclusão.
+
+## 9. Busca de arquiteturas GAN R2 → R5
+
+O estágio `stage11_gan_search.py` preparou pares R2→R5 registrados, pesos e as arquiteturas `identity`, `unet_light`, `resnet9`, `attention_unet` e `multiscale`. A seleção será por ganho de biomassa em GroupKFold de 22/23 (sucesso: ΔR² ≥ 0.05), com 23/24 bloqueada até a avaliação final. **Ainda não há treinos ou resultados comparativos** nessa busca.
+
 ## Como reproduzir
 ```bash
 python3 code/pipeline/stage_multisafra.py \

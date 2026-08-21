@@ -7,6 +7,9 @@
 | `gan_fusion_2324` | 23/24 | Produtividade com GAN por fold | diagnóstico robusto | `artifacts/archive/legacy/pipeline/stage8_2324_ganfusion_cv/` |
 | `gan_2526` | 25/26 | V10/V13→R1 e CHL | proof-of-mechanism | `artifacts/archive/legacy/pipeline/stage8_2526/` |
 | `rgb_texture_tensors` | 22/23 + 25/26 | Tensor RGB + índices + GLCM por estágio | reprodutível | `artifacts/runs/rgb_texture_tensors/` |
+| `rfinal_2324` | 22/23→23/24 | Transferência R2→R5 para biomassa | resultado negativo | `artifacts/runs/2324_rfinal_forecast/` |
+| `residual_gan_2324` | 22/23→23/24 | GAN residual R2→R5 orientada à biomassa | resultado negativo; reavaliação OOF pendente | `artifacts/runs/2324_residual_gan/` |
+| `gan_architecture_search` | 22/23→23/24 | Busca registrada de arquiteturas R2→R5 | preparado; sem treinos | `artifacts/runs/gan_architecture_search/` |
 
 Para um novo experimento, criar um TOML em `configs/`, executar via `scripts/abc_run.py` e registrar
 o novo `run-id` nesta tabela com a unidade de validação e cenário de preditores.
