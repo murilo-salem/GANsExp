@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 """PASSO 1 — Cubo 5-bandas por pixel (B1-B5) fundindo RGB + RRENIR.
 
-Só é viável na safra 22/23, que tem RGB **e** RRENIR por estágio (no 23/24 o único RGB é 'zero'
-e está corrompido). Para cada estágio/parcela, recorta os dois orthos (mesmo CRS, EPSG:31982),
-reamostra p/ um tamanho comum e empilha:
+É viável nas safras que têm RGB **e** RRENIR por estágio. Para cada estágio/parcela, recorta
+os dois orthos (mesmo CRS, EPSG:31982), reamostra para um tamanho comum e empilha:
 
     B1 Azul    = RGB[...,2]      B2 Verde = RGB[...,1]
     B3 Vermelho= RRENIR[...,0]   B4 RedEdge = RRENIR[...,1]   B5 NIR = RRENIR[...,2]
@@ -11,7 +10,8 @@ reamostra p/ um tamanho comum e empilha:
 (usa o vermelho do RRENIR — multiespectral calibrado; azul/verde do RGB são DN, ressalva
 radiométrica documentada). Gera, por parcela/estágio:
     npy5/<tag>.npy                    stack 5-bandas (H,W,5) em [0,1]
-    features_5band_<safra>.csv        índices (inclui GNDVI/EVI/VARI/TGI) + estatísticas + GLCM(NIR)
+    features_5band_<safra>.csv        índices (inclui GNDVI/EVI/VARI/TGI) + estatísticas
+                                       + GLCM(NIR) + GLCM de luminância RGB
     manifest.csv
 
 Uso:
@@ -50,18 +50,34 @@ def resize(arr: np.ndarray, size: int) -> np.ndarray:
 
 
 def find_pairs(ortho_dir: Path) -> dict:
-    """Casa RGB_<estagio> com RRENIR_<estagio> por estágio (ignora 'zero')."""
+    """Casa RGB com RRENIR por estágio e retorna a ordem RGB dos canais.
+
+    Os mosaicos históricos usam ``RGB_*`` e armazenam [R, G, B]. Os novos
+    mosaicos 23/24 usam os nomes ``Ortho_BGR*``/``Orho_B_G_R*`` e armazenam
+    [B, G, R]. A ordem é explicitada no retorno, nunca inferida pelo leitor
+    GeoTIFF (os arquivos não trazem ColorInterpretation por banda).
+    """
     def stage(p):
         m = STAGE_RE.search(p.stem)
         return m.group(1).upper() if m else None
-    rgb = {stage(p): p for p in ortho_dir.glob("*.tif")
-           if p.name.lower().startswith("rgb") and stage(p)}
+    rgb = {}
+    for p in ortho_dir.glob("*.tif"):
+        name = p.name.lower()
+        s = stage(p)
+        if not s:
+            continue
+        if name.startswith("rgb"):
+            rgb[s] = (p, (0, 1, 2))
+        elif name.startswith(("ortho_bgr", "orho_b_g_r")):
+            rgb[s] = (p, (2, 1, 0))
     rre = {stage(p): p for p in ortho_dir.glob("RRENIR_*.tif") if stage(p)}
-    return {s: (rgb[s], rre[s]) for s in sorted(set(rgb) & set(rre))}
+    return {s: (*rgb[s], rre[s]) for s in sorted(set(rgb) & set(rre))}
 
 
-def stack5(rgb_crop: np.ndarray, rre_crop: np.ndarray, size: int) -> np.ndarray:
-    rgb = resize(to_reflectance(rgb_crop), size)     # [R,G,B]
+def stack5(rgb_crop: np.ndarray, rgb_bands: tuple[int, int, int],
+           rre_crop: np.ndarray, size: int) -> np.ndarray:
+    """Empilha Azul, Verde, Red, RedEdge e NIR após normalização por recorte."""
+    rgb = resize(to_reflectance(rgb_crop[..., rgb_bands]), size)  # [R,G,B]
     rre = resize(to_reflectance(rre_crop), size)     # [Red,RedEdge,NIR]
     return np.stack([rgb[..., 2], rgb[..., 1], rre[..., 0], rre[..., 1], rre[..., 2]], axis=-1)
 
@@ -82,6 +98,14 @@ def parcel_features_5b(refl5: np.ndarray, ndvi_thr: float = 0.3) -> dict:
     nir = refl5[..., 4]
     feat.update(glcm_features(nir, mask))
     feat.update(glcm_window_features(nir, mask))
+    # Texturas RGB adicionais: luminância da câmera, preservando as texturas
+    # RRENIR/NIR acima para manter comparabilidade com a série anterior.
+    red, green, blue = refl5[..., 2], refl5[..., 1], refl5[..., 0]
+    rgb_luminance = 0.2126 * red + 0.7152 * green + 0.0722 * blue
+    feat.update({f"rgb_{name}": value
+                 for name, value in glcm_features(rgb_luminance, mask).items()})
+    feat.update({f"rgb_{name}": value
+                 for name, value in glcm_window_features(rgb_luminance, mask).items()})
     return feat
 
 
@@ -100,11 +124,11 @@ def main():
     print(f"pares RGB↔RRENIR por estágio: {list(pairs)}")
 
     feat_rows, man_rows = [], []
-    for stage, (rgb_p, rre_p) in pairs.items():
+    for stage, (rgb_p, rgb_bands, rre_p) in pairs.items():
         rgb, rre = Ortho(rgb_p), Ortho(rre_p)
-        print(f"[{stage:4s}] {rgb_p.name} + {rre_p.name}")
+        print(f"[{stage:4s}] {rgb_p.name} (RGB={rgb_bands}) + {rre_p.name}")
         for p in parcels:
-            refl5 = stack5(rgb.crop_bbox(p.bbox), rre.crop_bbox(p.bbox), args.size)
+            refl5 = stack5(rgb.crop_bbox(p.bbox), rgb_bands, rre.crop_bbox(p.bbox), args.size)
             tag = f"{stage}_p{p.fid:02d}_d{p.dose_n}_b{p.bloco}"
             np.save(out / "npy5" / f"{tag}.npy", refl5.astype(np.float32))
             f = parcel_features_5b(refl5)

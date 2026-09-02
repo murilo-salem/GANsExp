@@ -143,6 +143,24 @@ O ΔR² é **−0.099**: a variante não atingiu o critério pré-definido de ga
 
 O estágio `stage11_gan_search.py` preparou pares R2→R5 registrados, pesos e as arquiteturas `identity`, `unet_light`, `resnet9`, `attention_unet` e `multiscale`. A seleção será por ganho de biomassa em GroupKFold de 22/23 (sucesso: ΔR² ≥ 0.05), com 23/24 bloqueada até a avaliação final. **Ainda não há treinos ou resultados comparativos** nessa busca.
 
+## 10. Busca do número/composição de canais condicionais da GAN (23/24)
+
+Para responder qual o melhor conjunto de atributos que entram na GAN, cada configuração
+foi avaliada com a GAN retreinada por bloco externo (4 folds de 6 parcelas) e R² OOF por
+parcela na tarefa agronômica downstream. Os atributos condicionais agora são configuráveis
+(`--gan_attr_names`) e calculados pelo módulo canônico `milho_experiment.indices`,
+consistente com a pipeline agronômica. Resultados em `artifacts/runs/2324_attr_search_*/`.
+
+| Alvo | Melhor nº de canais | Composição | R² OOF | Baseline "real" |
+|---|---:|---|---:|---:|
+| **Biomassa** | **2** | chlorophyll + NDVI | **0.716** | 0.658 (extratrees) |
+| **Produtividade** | **5** | chl+NDVI+NDRE+SAVI+EVI2 | **0.735** | 0.590 (extratrees) |
+
+**Leitura:** o "número de objetos" ótimo depende do alvo (2 para biomassa, 5 para
+produtividade). As GANs com condicionamento adequado preservam ou superam o sinal do
+reprodutivo real na fusão, mas com n pequeno (24 parcelas) as diferenças são indicativas.
+Métricas de imagem (L1/ΔNDVI) variam pouco entre as configurações (~0,11 / ~0,05).
+
 ## Como reproduzir
 ```bash
 python3 code/pipeline/stage_multisafra.py \

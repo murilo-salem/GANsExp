@@ -19,21 +19,25 @@ from sklearn.preprocessing import StandardScaler
 
 HERE = Path(__file__).resolve().parent
 REPO = HERE.parents[1] / "pytorch-CycleGAN-and-pix2pix"
-sys.path[:0] = [str(REPO), str(HERE), str(HERE.parents[0] / "analysis")]
-from data.phenology_dataset import N_COND, attribute_channels  # noqa: E402
+sys.path[:0] = [str(REPO), str(HERE), str(HERE.parents[0] / "analysis"),
+                str(HERE.parents[1] / "src")]
+from data.phenology_dataset import DEFAULT_ATTR_NAMES  # noqa: E402
 from models.networks import define_G  # noqa: E402
 from plsr_kfold import metrics  # noqa: E402
 from stage6_features_ortho import parcel_features  # noqa: E402
+from milho_experiment.indices import attribute_channels  # noqa: E402
 
 
-def load_generator(path, device, ngf=64, netg="unet_256", norm="batch"):
-    model = define_G(3 + N_COND, 3, ngf, netg, norm=norm)
+def load_generator(path, device, ngf=64, netg="unet_256", norm="batch",
+                   attr_names=DEFAULT_ATTR_NAMES):
+    model = define_G(3 + len(attr_names), 3, ngf, netg, norm=norm)
     model.load_state_dict(torch.load(path, map_location=device, weights_only=True))
     return model.to(device).eval()
 
 
-def synth(model, refl, device):
-    x = np.concatenate([refl, attribute_channels(refl)], axis=-1)
+def synth(model, refl, device, attr_names=DEFAULT_ATTR_NAMES, attr_normalize="image"):
+    x = np.concatenate([refl, attribute_channels(refl, names=attr_names,
+                                                  normalize=attr_normalize)], axis=-1)
     t = torch.from_numpy(x * 2 - 1).permute(2, 0, 1)[None].to(device)
     with torch.no_grad():
         return np.clip((model(t)[0].permute(1, 2, 0).cpu().numpy() + 1) / 2, 0, 1)
@@ -62,7 +66,12 @@ def main():
     ap.add_argument("--nc", type=int, default=3)
     ap.add_argument("--bootstrap", type=int, default=1000)
     ap.add_argument("--seed", type=int, default=42)
+    ap.add_argument("--gan-attr-names", type=str, default=",".join(DEFAULT_ATTR_NAMES),
+                    help="nomes dos canais condicionais usados no treino")
+    ap.add_argument("--gan-attr-normalize", type=str, default="image",
+                    choices=["image", "global", "none"])
     args = ap.parse_args()
+    attr_names = tuple(n.strip() for n in args.gan_attr_names.split(",") if n.strip())
 
     out = Path(args.out); out.mkdir(parents=True, exist_ok=True)
     manifest = pd.read_csv(Path(args.stage4) / "manifest.csv")
@@ -85,12 +94,13 @@ def main():
     nc = min(args.nc, xtrain.shape[1], len(train_ids) - 1)
     model_y = make_pipeline(StandardScaler(), PLSRegression(n_components=nc)).fit(xtrain, ytrain)
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-    generator = load_generator(args.ckpt, device)
+    generator = load_generator(args.ckpt, device, attr_names=attr_names)
 
     rows = []
     for p in val_pairs.itertuples():
         veg, real = np.load(npy[(p.fid, p.veg)]), np.load(npy[(p.fid, p.rep)])
-        fake = synth(generator, veg, device)
+        fake = synth(generator, veg, device, attr_names=attr_names,
+                     attr_normalize=args.gan_attr_normalize)
         rows.append({
             "pair": p.pair, "fid": p.fid, "veg": p.veg, "rep": p.rep,
             "y_meas": float(r1.loc[p.fid, "chl_total"]),

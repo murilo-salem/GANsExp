@@ -13,6 +13,7 @@ Uso como biblioteca:
 """
 from __future__ import annotations
 
+import sys
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -128,6 +129,19 @@ def read_parcels(shp_path: str | Path) -> list[Parcel]:
 
 # ----------------------------------------------------------------- índices
 
+# Importa implementações canônicas do pacote compartilhado para garantir
+# consistência entre a GAN (phenology_dataset.py) e a pipeline agronômica.
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
+from milho_experiment.indices import (  # noqa: E402
+    attribute_channels,
+    attribute_channels_5band,
+    bands5_indices,
+    chlorophyll_map,
+    norm01,
+    rrenir_indices,
+)
+
+
 def to_reflectance(crop: np.ndarray) -> np.ndarray:
     """uint16 -> float32 em [0,1] por normalização robusta (percentil 99.5)."""
     x = crop.astype(np.float32)
@@ -135,42 +149,6 @@ def to_reflectance(crop: np.ndarray) -> np.ndarray:
     if hi <= 0:
         hi = float(x.max()) or 1.0
     return np.clip(x / hi, 0.0, 1.0)
-
-
-def rrenir_indices(refl: np.ndarray, eps: float = 1e-8) -> dict:
-    """Índices para orto RRENIR (bandas: 0=Red, 1=RedEdge, 2=NIR)."""
-    red, rededge, nir = refl[..., 0], refl[..., 1], refl[..., 2]
-    ndvi = (nir - red) / (nir + red + eps)
-    ndre = (nir - rededge) / (nir + rededge + eps)
-    cire = nir / (rededge + eps) - 1.0            # CIrededge ~ proxy de clorofila
-    savi = 1.5 * (nir - red) / (nir + red + 0.5 + eps)
-    return {"NDVI": ndvi, "NDRE": ndre, "CIrededge": cire, "SAVI": savi}
-
-
-def chlorophyll_map(refl: np.ndarray) -> np.ndarray:
-    """Mapa de clorofila (proxy CIrededge) normalizado para [0,1]."""
-    cire = rrenir_indices(refl)["CIrededge"]
-    lo, hi = np.nanpercentile(cire, [2, 98])
-    return np.clip((cire - lo) / (hi - lo + 1e-8), 0.0, 1.0)
-
-
-def bands5_indices(refl5: np.ndarray, eps: float = 1e-8) -> dict:
-    """Índices para stack 5-bandas B1-B5 (0=Azul,1=Verde,2=Vermelho,3=RedEdge,4=NIR).
-
-    Além dos de RRENIR, habilita índices que exigem azul/verde: GNDVI, EVI, VARI, TGI.
-    Obs.: azul/verde vêm de câmera RGB (DN, não calibrada) — usar com essa ressalva.
-    """
-    blue, green, red, rededge, nir = (refl5[..., k] for k in range(5))
-    return {
-        "NDVI": (nir - red) / (nir + red + eps),
-        "GNDVI": (nir - green) / (nir + green + eps),
-        "NDRE": (nir - rededge) / (nir + rededge + eps),
-        "CIrededge": nir / (rededge + eps) - 1.0,
-        "SAVI": 1.5 * (nir - red) / (nir + red + 0.5 + eps),
-        "EVI": 2.5 * (nir - red) / (nir + 6.0 * red - 7.5 * blue + 1.0 + eps),
-        "VARI": (green - red) / (green + red - blue + eps),
-        "TGI": green - 0.39 * red - 0.61 * blue,   # Triangular Greenness Index (simplificado)
-    }
 
 
 if __name__ == "__main__":

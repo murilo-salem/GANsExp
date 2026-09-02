@@ -27,20 +27,23 @@ from sklearn.preprocessing import StandardScaler
 
 HERE = Path(__file__).resolve().parent
 REPO = HERE.parents[1] / "pytorch-CycleGAN-and-pix2pix"
-sys.path[:0] = [str(REPO), str(HERE), str(HERE.parents[0] / "analysis")]
-from data.phenology_dataset import N_COND, attribute_channels  # noqa: E402
+sys.path[:0] = [str(REPO), str(HERE), str(HERE.parents[0] / "analysis"),
+                str(HERE.parents[1] / "src")]
+from data.phenology_dataset import DEFAULT_ATTR_NAMES  # noqa: E402
 from models.networks import define_G  # noqa: E402
 from stage6_features_ortho import parcel_features  # noqa: E402
+from milho_experiment.indices import attribute_channels  # noqa: E402
 
 
-def load_g(path: str, device: torch.device):
-    model = define_G(3 + N_COND, 3, 64, "unet_256", norm="batch")
+def load_g(path: str, device: torch.device, attr_names=DEFAULT_ATTR_NAMES):
+    model = define_G(3 + len(attr_names), 3, 64, "unet_256", norm="batch")
     model.load_state_dict(torch.load(path, map_location=device, weights_only=True))
     return model.to(device).eval()
 
 
-def synth(model, refl, device):
-    x = np.concatenate([refl, attribute_channels(refl)], axis=-1)
+def synth(model, refl, device, attr_names=DEFAULT_ATTR_NAMES, attr_normalize="image"):
+    x = np.concatenate([refl, attribute_channels(refl, names=attr_names,
+                                                  normalize=attr_normalize)], axis=-1)
     t = torch.from_numpy(x * 2 - 1).permute(2, 0, 1)[None].to(device)
     with torch.no_grad():
         return np.clip((model(t)[0].permute(1, 2, 0).cpu().numpy() + 1) / 2, 0, 1)
@@ -81,8 +84,13 @@ def main():
     ap.add_argument("--stage4", required=True); ap.add_argument("--table", required=True)
     ap.add_argument("--ckpt-dir", required=True, help="diretório contendo pheno_2324_cv_bN/2000_net_G.pth")
     ap.add_argument("--out", required=True); ap.add_argument("--seed", type=int, default=42)
+    ap.add_argument("--gan-attr-names", type=str, default=",".join(DEFAULT_ATTR_NAMES),
+                    help="nomes dos canais condicionais usados no treino")
+    ap.add_argument("--gan-attr-normalize", type=str, default="image",
+                    choices=["image", "global", "none"])
     args = ap.parse_args()
     out = Path(args.out); out.mkdir(parents=True, exist_ok=True)
+    attr_names = tuple(n.strip() for n in args.gan_attr_names.split(",") if n.strip())
     man = pd.read_csv(Path(args.stage4) / "manifest.csv"); man.stage = man.stage.str.upper()
     npy = {(int(r.fid), r.stage): Path(args.stage4) / r.npy for r in man.itertuples()}
     tbl = pd.read_excel(args.table); tbl.Estagio = tbl.Estagio.astype(str).str.upper()
@@ -94,7 +102,7 @@ def main():
     rows = []
     for block in sorted(man.bloco.unique()):
         ckpt = Path(args.ckpt_dir) / f"pheno_2324_cv_b{block}" / "2000_net_G.pth"
-        model = load_g(str(ckpt), dev)
+        model = load_g(str(ckpt), dev, attr_names=attr_names)
         for fid, g in man.groupby("fid"):
             dose, parcel_block = str(g.dose_n.iloc[0]), int(g.bloco.iloc[0])
             # O checkpoint deste laço foi treinado sem ``block``.  Gerar as
@@ -106,7 +114,8 @@ def main():
                 continue
             veg = [np.load(npy[(int(fid), stage)]) for stage in ("V8", "V13")]
             v = np.mean([vector(x, cols) for x in veg], axis=0)
-            s = np.mean([vector(synth(model, x, dev), cols) for x in veg], axis=0)
+            s = np.mean([vector(synth(model, x, dev, attr_names=attr_names,
+                                      attr_normalize=args.gan_attr_normalize), cols) for x in veg], axis=0)
             row = {"fid": int(fid), "block": parcel_block, "y": ymap[(dose, parcel_block)],
                    "fold": int(block), "dose": float(dose)}
             row.update({f"veg_{c}": z for c, z in zip(cols, v)})

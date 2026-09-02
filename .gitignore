@@ -20,3 +20,6 @@ __pycache__/
 .venv/
 venv/
 env/
+
+# Cache de token MSAL (SharePoint) - contem credenciais
+.msal_token_cache.json

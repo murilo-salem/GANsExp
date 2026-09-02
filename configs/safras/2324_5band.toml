@@ -1,0 +1,19 @@
+[experiment]
+run_id = "2324_5band_features"
+season = "2023_2024"
+validation_unit = "parcela"
+description = "Índices e texturas por parcela combinando RGB BGR e RRENIR"
+
+[inputs]
+orthomosaics = "{data}/raw/safra_2023_2024/orthomosaics"
+parcels = "{data}/raw/safra_2023_2024/geometry/Shape_parcelas23_24.shp"
+
+[execution]
+entrypoint = "{root}/code/pipeline/build_5band.py"
+arguments = [
+  "--ortho-dir", "{data}/raw/safra_2023_2024/orthomosaics",
+  "--shapefile", "{data}/raw/safra_2023_2024/geometry/Shape_parcelas23_24.shp",
+  "--out", "{artifacts}/runs/2324_5band_features/results",
+  "--safra", "2324",
+  "--size", "256",
+]

@@ -24,8 +24,10 @@ from PIL import Image
 
 REPO = Path(__file__).resolve().parents[2] / "pytorch-CycleGAN-and-pix2pix"
 sys.path.insert(0, str(REPO))
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
 from models.networks import define_G                       # noqa: E402
-from data.phenology_dataset import attribute_channels, N_COND  # noqa: E402
+from data.phenology_dataset import DEFAULT_ATTR_NAMES       # noqa: E402
+from milho_experiment.indices import attribute_channels      # noqa: E402
 
 
 def false_color(refl: np.ndarray) -> np.ndarray:
@@ -53,10 +55,17 @@ def main():
     ap.add_argument("--netG", default="unet_256")
     ap.add_argument("--norm", default="batch")
     ap.add_argument("--pairs", help="pairs.csv; quando informado, agrega métricas por parcela")
+    ap.add_argument("--gan-attr-names", type=str, default=",".join(DEFAULT_ATTR_NAMES),
+                    help="nomes dos canais condicionais usados no treino, separados por vírgula")
+    ap.add_argument("--gan-attr-normalize", type=str, default="image",
+                    choices=["image", "global", "none"],
+                    help="modo de normalização dos canais condicionais usado no treino")
     args = ap.parse_args()
 
+    attr_names = tuple(n.strip() for n in args.gan_attr_names.split(",") if n.strip())
+    n_cond = len(attr_names)
     dev = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-    G = define_G(3 + N_COND, 3, args.ngf, args.netG, norm=args.norm)
+    G = define_G(3 + n_cond, 3, args.ngf, args.netG, norm=args.norm)
     state = torch.load(args.ckpt, map_location=dev, weights_only=True)
     G.load_state_dict(state)
     G.to(dev).eval()
@@ -69,7 +78,8 @@ def main():
     for p in sorted(in_dir.glob("*.npy")):
         veg = np.load(p).astype(np.float32)                 # (H,W,3) [0,1]
         rep = np.load(tg_dir / p.name).astype(np.float32)
-        A = np.concatenate([veg, attribute_channels(veg)], -1)
+        A = np.concatenate([veg, attribute_channels(veg, names=attr_names,
+                                                          normalize=args.gan_attr_normalize)], -1)
         t = torch.from_numpy(A * 2 - 1).permute(2, 0, 1)[None].to(dev)
         with torch.no_grad():
             fake = G(t)[0].permute(1, 2, 0).cpu().numpy()    # [-1,1]

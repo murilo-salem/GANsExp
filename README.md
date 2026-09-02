@@ -16,6 +16,7 @@ A unidade independente de validação é a **parcela**. Estágios repetidos, par
 | Produtividade pooled | R² = 0,44 | Estimativa estável recomendada; resultados isolados são sensíveis. |
 | GAN por fold, produtividade 23/24 | vegetativo R² OOF = 0,791; fusão GAN = 0,724 | A imagem sintética preserva sinal, mas não supera o vegetativo real. |
 | GAN V10/V13 → R1, 25/26 | L1 mínimo = 0,1200 | Aproximação de imagem; clorofila R1 não teve predição útil. |
+| GAN por fold, busca de condicionamento 23/24 | biomassa R² OOF = 0,716 (2 canais); produtividade R² OOF = 0,735 (5 canais) | O melhor conjunto de canais condicionais depende do alvo; as GANs superam o baseline "real" na fusão. |
 
 As métricas, fontes e ressalvas completas estão em [Status honesto dos resultados](code/pipeline/RESULTS_STATUS.md).
 
@@ -67,6 +68,8 @@ Consulte a [arquitetura](docs/ARCHITECTURE.md), o [protocolo de validação](doc
 | `residual_gan_2324` | GAN residual R2→R5 obteve R²=0,624, abaixo do baseline R2 (0,724; ΔR²=−0,099). | resultado negativo; reavaliação OOF pendente |
 | `gan_architecture_search` | Pares registrados, pesos e protocolo de seleção preparados; arquiteturas ainda não foram treinadas. | preparado |
 | `rgb_texture_tensors` | Geração reprodutível de tensores espaciais RGB, índices e GLCM em mosaicos elegíveis. | reprodutível |
+| `gan_attr_search` | GAN retreinada por fold para cada conjunto de canais condicionais: biomassa ótima com 2 canais (R²=0,716), produtividade com 5 (R²=0,735). Atributos agora configuráveis e calculados por módulo canônico. | concluído (n=24) |
+| `2324_temporal_gan_value` | CV aninhada para V6+V8→V13 e V6+V8+V13+R2→R5, com busca progressiva de índices/GLCM e contrastes real, sintético e híbrido. | implementado; treino confirmatório pendente |
 
 Na trilha R2→R5, a calibração local do `stats_aug` alcançou R² OOF=0,644, mas utiliza biomassa local em 18 parcelas para calibrar cada fold. É calibração local de R5, não transferência remota sem rótulos. O relatório agregado da GAN residual antecede os quatro retreinos por fold mais recentes; a avaliação OOF deve ser regenerada antes de atualizar essa conclusão.
 
