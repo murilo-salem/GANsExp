@@ -1,0 +1,30 @@
+[experiment]
+run_id = "2223_gan_architecture_search"
+season = "2022_2023"
+target = "Biomassa+Produtividade"
+validation_unit = "parcela"
+description = "Busca LOBO de arquiteturas R2 e V8+R2 para R5; 23/24 bloqueada"
+
+[inputs]
+dataset = "{artifacts}/runs/gan_architecture_search/dataset"
+source_stage4 = "{artifacts}/runs/2223_stage4_residual/results"
+source_table = "{data}/raw/safra_2022_2023/field/parametros_2223_normalizado.xlsx"
+
+[execution]
+entrypoint = "{root}/code/pipeline/stage14_architecture_search.py"
+arguments = [
+  "selection",
+  "--dataset", "{artifacts}/runs/gan_architecture_search/dataset",
+  "--source-stage4", "{artifacts}/runs/2223_stage4_residual/results",
+  "--source-table", "{data}/raw/safra_2022_2023/field/parametros_2223_normalizado.xlsx",
+  "--out", "{artifacts}/runs/2223_gan_architecture_search/results",
+  "--tracks", "A", "B",
+  "--targets", "Biomassa", "Produtividade",
+  "--seeds", "7", "11", "23",
+  "--epochs", "200",
+  "--batch-size", "4",
+  "--crop-size", "128",
+  "--width", "32",
+  "--bootstrap", "10000",
+  "--sample-images", "2",
+]

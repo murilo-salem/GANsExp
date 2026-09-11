@@ -1,6 +1,8 @@
 README.md
 pyproject.toml
 src/milho_experiment/__init__.py
+src/milho_experiment/architecture_models.py
+src/milho_experiment/gan_losses.py
 src/milho_experiment/indices.py
 src/milho_experiment/runs.py
 src/milho_experiment/runtime.py
@@ -11,7 +13,10 @@ src/milho_experiment.egg-info/SOURCES.txt
 src/milho_experiment.egg-info/dependency_links.txt
 src/milho_experiment.egg-info/requires.txt
 src/milho_experiment.egg-info/top_level.txt
+tests/test_architecture_search.py
 tests/test_build_5band.py
+tests/test_gan_late_fusion.py
+tests/test_gan_losses.py
 tests/test_gan_search.py
 tests/test_indices.py
 tests/test_rfinal_forecast.py

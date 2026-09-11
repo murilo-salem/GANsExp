@@ -1,0 +1,33 @@
+[experiment]
+run_id = "2324_temporal_gan_loss_ablation"
+season = "2023_2024"
+target = "Biomassa+Produtividade"
+validation_unit = "parcela"
+description = "Ablação aninhada de losses da GAN temporal RRENIR para R5"
+
+[inputs]
+stage4 = "{artifacts}/archive/legacy/pipeline/stage4_2324"
+table = "{data}/raw/safra_2023_2024/field/parametros_2324_normalizado.xlsx"
+
+[execution]
+entrypoint = "{root}/code/pipeline/stage13_temporal_gan_loss_ablation.py"
+arguments = [
+  "run",
+  "--stage4", "{artifacts}/archive/legacy/pipeline/stage4_2324",
+  "--table", "{data}/raw/safra_2023_2024/field/parametros_2324_normalizado.xlsx",
+  "--out", "{artifacts}/runs/2324_temporal_gan_loss_ablation/results",
+  "--horizon", "R5",
+  "--targets", "Biomassa", "Produtividade",
+  "--arms", "l1", "l1_gan", "l1_indices_texture", "l1_gan_feature_matching", "full",
+  "--rs-modes", "rs_puro", "rs_dose",
+  "--screen-epochs", "50",
+  "--final-epochs", "200",
+  "--screen-seed", "7",
+  "--final-seeds", "7", "11", "23",
+  "--alpha-grid", "0.1", "0.3", "1.0",
+  "--fm-grid", "1", "5", "10",
+  "--batch-size", "4",
+  "--bootstrap", "10000",
+  "--checkpoint-every", "10",
+  "--checkpoint-policy", "rotating",
+]

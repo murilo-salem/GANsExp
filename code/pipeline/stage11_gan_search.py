@@ -10,11 +10,39 @@ from pathlib import Path
 import numpy as np, pandas as pd
 
 CONFIGS = {
-    "identity": {"model": "identity", "adversarial": False},
-    "unet_light": {"model": "unet", "width": 32, "adversarial": True},
-    "resnet9": {"model": "resnet", "blocks": 9, "adversarial": True},
-    "attention_unet": {"model": "attention_unet", "width": 32, "adversarial": True},
-    "multiscale": {"model": "unet", "width": 32, "discriminators": 2, "feature_matching": True},
+    "identity": {"track": "A", "family": "baseline", "input_stages": ["R2"],
+                 "model": "identity", "adversarial": False},
+    "affine": {"track": "A", "family": "baseline", "input_stages": ["R2"],
+               "model": "affine", "adversarial": False},
+    "unet_l1": {"track": "A", "family": "deterministic", "input_stages": ["R2"],
+                "model": "unet", "width": 32, "adversarial": False, "losses": ["L1"]},
+    "unet_light": {"track": "A", "family": "gan", "input_stages": ["R2"],
+                   "model": "unet", "width": 32, "adversarial": True,
+                   "discriminators": 1, "losses": ["L1", "GAN"]},
+    "resnet9": {"track": "A", "family": "gan", "input_stages": ["R2"],
+                "model": "resnet", "width": 32, "blocks": 9, "adversarial": True,
+                "discriminators": 1, "losses": ["L1", "GAN"]},
+    "attention_unet": {"track": "A", "family": "gan", "input_stages": ["R2"],
+                       "model": "attention_unet", "width": 32, "adversarial": True,
+                       "discriminators": 1, "losses": ["L1", "GAN"]},
+    "multiscale": {"track": "A", "family": "gan", "input_stages": ["R2"],
+                   "model": "unet", "width": 32, "adversarial": True,
+                   "discriminators": 2, "feature_matching": True,
+                   "losses": ["L1", "GAN", "feature_matching"]},
+    "wgangp": {"track": "A", "family": "gan_stability", "input_stages": ["R2"],
+               "model": "unet", "width": 32, "adversarial": True,
+               "gan_mode": "wgangp", "gradient_penalty": 10.0,
+               "enabled_by_default": False,
+               "trigger": "adversarial collapse or non-finite loss in at least two seeds",
+               "losses": ["L1", "Wasserstein", "gradient_penalty"]},
+    "history": {"track": "B", "family": "baseline", "input_stages": ["V8", "R2"],
+                "model": "extratrees_direct", "adversarial": False},
+    "convlstm_lite": {"track": "B", "family": "temporal", "input_stages": ["V8", "R2"],
+                      "model": "convlstm", "width": 32, "adversarial": False,
+                      "losses": ["L1"]},
+    "simvp_lite": {"track": "B", "family": "temporal", "input_stages": ["V8", "R2"],
+                   "model": "simvp", "width": 32, "adversarial": False,
+                   "losses": ["L1"]},
 }
 
 def manifest(root: Path, stage: str) -> pd.DataFrame:
@@ -61,7 +89,21 @@ def prepare(args):
     for r in target.itertuples(): target_rows.append({"fid":r.fid,"dose_n":r.dose_n,"bloco":r.bloco,"r2":r.image,"mask":r.mask_file,**quality(np.load(r.image),np.load(r.mask_file))})
     pd.DataFrame(target_rows).to_csv(out/'target_r2_qc.csv',index=False)
     (out/'architectures.json').write_text(json.dumps(CONFIGS,indent=2)+'\n')
-    (out/'protocol.json').write_text(json.dumps({"selection":"4-fold 22/23 downstream biomass gain; 23/24 locked","success":"delta_R2 >= 0.05","target_r5_forbidden_before_final":True},indent=2)+'\n')
+    (out/'protocol.json').write_text(json.dumps({
+        "selection": "leave-one-block-out 22/23; 23/24 locked",
+        "primary_target": "Biomassa",
+        "secondary_target": "Produtividade",
+        "success": "delta_R2 >= 0.05; bootstrap lower95 > 0; Holm p < 0.05",
+        "downstream": {"model": "ExtraTreesRegressor", "n_estimators": 500,
+                       "min_samples_leaf": 2, "max_features": 1.0, "select_k": 8},
+        "seeds": [7, 11, 23],
+        "checkpoint_policy": "none",
+        "mask_generated_before_features": True,
+        "experimental_unit": "block+dose (24 independent field outcomes)",
+        "scenarios": ["rs_only", "dose_only", "rs_plus_dose"],
+        "target_r5_forbidden_before_final": True,
+        "rankings_are_separate_by_track": True,
+    },indent=2)+'\n')
     print(f'pares registrados: {len(rows)} | R2 alvo QC: {len(target_rows)} | configs: {len(CONFIGS)}')
 
 def main():

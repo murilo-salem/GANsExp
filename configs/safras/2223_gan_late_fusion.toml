@@ -1,0 +1,28 @@
+[experiment]
+run_id = "2223_gan_late_fusion"
+season = "2022_2023"
+target = "Biomassa"
+validation_unit = "bloco+dose"
+description = "Fusao tardia aninhada de R2 real, R5 sintetico por Attention U-Net e dose"
+
+[inputs]
+dataset = "{artifacts}/runs/gan_architecture_search/dataset"
+source_stage4 = "{artifacts}/runs/2223_stage4_residual/results"
+source_table = "{data}/raw/safra_2022_2023/field/parametros_2223_normalizado.xlsx"
+
+[execution]
+entrypoint = "{root}/code/pipeline/stage15_gan_late_fusion.py"
+arguments = [
+  "run",
+  "--dataset", "{artifacts}/runs/gan_architecture_search/dataset",
+  "--source-stage4", "{artifacts}/runs/2223_stage4_residual/results",
+  "--source-table", "{data}/raw/safra_2022_2023/field/parametros_2223_normalizado.xlsx",
+  "--out", "{artifacts}/runs/2223_gan_late_fusion/results",
+  "--seeds", "7", "11", "23",
+  "--epochs", "200",
+  "--batch-size", "4",
+  "--crop-size", "128",
+  "--width", "32",
+  "--blend-step", "0.05",
+  "--bootstrap", "10000",
+]

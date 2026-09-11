@@ -13,6 +13,7 @@
 | `gan_attr_search_biomassa` | 23/24 | Número/composição de canais condicionais da GAN por R² biomassa | busca concluída; melhor = 2 canais (chl+NDVI), R²=0.716 | `artifacts/runs/2324_attr_search_biomassa/` |
 | `gan_attr_search_produtividade` | 23/24 | Número/composição de canais condicionais da GAN por R² produtividade | busca concluída; melhor = 5 canais, R²=0.735 | `artifacts/runs/2324_attr_search_produtividade/` |
 | `2324_temporal_gan_value` | 23/24 | GAN temporal V6+V8→V13 e V6+V8+V13+R2→R5; aumento, fusão e cenário combinado | implementado; execução confirmatória pendente | `artifacts/runs/2324_temporal_gan_value/` |
+| `2324_temporal_gan_loss_ablation` | 23/24 | Ablação aninhada de L1, índices/textura, adversarial, feature matching e gradientes para R5 | implementado; execução pendente | `artifacts/runs/2324_temporal_gan_loss_ablation/` |
 
 Para um novo experimento, criar um TOML em `configs/`, executar via `scripts/abc_run.py` e registrar
 o novo `run-id` nesta tabela com a unidade de validação e cenário de preditores.

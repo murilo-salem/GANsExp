@@ -70,6 +70,7 @@ Consulte a [arquitetura](docs/ARCHITECTURE.md), o [protocolo de validação](doc
 | `rgb_texture_tensors` | Geração reprodutível de tensores espaciais RGB, índices e GLCM em mosaicos elegíveis. | reprodutível |
 | `gan_attr_search` | GAN retreinada por fold para cada conjunto de canais condicionais: biomassa ótima com 2 canais (R²=0,716), produtividade com 5 (R²=0,735). Atributos agora configuráveis e calculados por módulo canônico. | concluído (n=24) |
 | `2324_temporal_gan_value` | CV aninhada para V6+V8→V13 e V6+V8+V13+R2→R5, com busca progressiva de índices/GLCM e contrastes real, sintético e híbrido. | implementado; treino confirmatório pendente |
+| `2324_temporal_gan_loss_ablation` | Ablação aninhada de losses para V6+V8+V13+R2→R5, sem canais auxiliares e com seleção agronômica interna dos pesos. | implementado; treino pendente |
 
 Na trilha R2→R5, a calibração local do `stats_aug` alcançou R² OOF=0,644, mas utiliza biomassa local em 18 parcelas para calibrar cada fold. É calibração local de R5, não transferência remota sem rótulos. O relatório agregado da GAN residual antecede os quatro retreinos por fold mais recentes; a avaliação OOF deve ser regenerada antes de atualizar essa conclusão.
 
