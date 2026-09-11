@@ -1,9 +1,6 @@
-from importlib.util import module_from_spec, spec_from_file_location
-from pathlib import Path
-import sys
 import numpy as np
 
-spec=spec_from_file_location('search',Path(__file__).parents[1]/'code/pipeline/stage11_gan_search.py'); mod=module_from_spec(spec); sys.modules[spec.name]=mod; spec.loader.exec_module(mod)
+from milho_experiment.pipeline.stage_05_synthesis import stage11_gan_search as mod
 
 def test_roll_zero_does_not_wrap_pixels():
     x=np.ones((4,4,1),np.float32); y=mod.roll_zero(x,1,0)

@@ -4,7 +4,6 @@ from pathlib import Path
 
 import numpy as np
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "code" / "pipeline"))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "pytorch-CycleGAN-and-pix2pix"))
 
 from milho_experiment.indices import (
@@ -53,7 +52,7 @@ class IndicesCanonicalTests(unittest.TestCase):
 
     def test_attribute_channels_consistency_with_geo(self):
         """Índices usados pela GAN devem coincidir com os da pipeline agronômica."""
-        import geo  # type: ignore
+        from milho_experiment.pipeline.stage_03_attributes import geo
 
         # geo.py reexporta as funções canônicas; verifica identidade e valores
         from milho_experiment.indices import chlorophyll_map

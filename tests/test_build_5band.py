@@ -1,12 +1,10 @@
-import sys
 import tempfile
 import unittest
 from pathlib import Path
 
 import numpy as np
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "code" / "pipeline"))
-import build_5band as features
+from milho_experiment.pipeline.stage_03_attributes import build_5band as features
 
 
 class Build5BandTests(unittest.TestCase):

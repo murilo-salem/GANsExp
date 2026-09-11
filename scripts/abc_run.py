@@ -22,7 +22,7 @@ def main() -> None:
     args = parser.parse_args()
     paths, config = ProjectPaths.discover(), load_config(args.config)
     execution = config["execution"]
-    entrypoint = paths.expand(execution["entrypoint"])
+    module = execution["module"]
     arguments = [str(paths.expand(str(arg))) if "{" in str(arg) else str(arg)
                  for arg in execution.get("arguments", [])]
     inputs = [paths.expand(value) for value in config.get("inputs", {}).values()]
@@ -31,14 +31,16 @@ def main() -> None:
         raise SystemExit("entradas ausentes:\n- " + "\n- ".join(missing))
     run_id = config["experiment"].get("run_id", args.config.stem)
     output_dir = paths.artifacts / "runs" / run_id
-    command = [sys.executable, str(entrypoint), *arguments]
+    command = [sys.executable, "-m", module, *arguments]
     if args.dry_run:
         print(" ".join(command))
         print(f"manifesto: {output_dir / 'manifest.json'}")
         return
-    if not entrypoint.is_file():
-        raise SystemExit(f"entrypoint ausente: {entrypoint}")
-    manifest = write_manifest(output_dir, args.config, inputs, command)
+    manifest = write_manifest(
+        output_dir, args.config, inputs, command,
+        pipeline_stage=config["experiment"].get("pipeline_stage", args.config.parent.name),
+        depends_on=config["experiment"].get("depends_on", []),
+    )
     print(f"manifesto: {manifest}")
     subprocess.run(command, check=True, cwd=paths.root)
 

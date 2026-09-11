@@ -1,6 +1,3 @@
-from importlib.util import module_from_spec, spec_from_file_location
-from pathlib import Path
-import sys
 
 import numpy as np
 import pytest
@@ -10,11 +7,7 @@ import pandas as pd
 from milho_experiment.architecture_models import make_discriminators, make_generator
 
 
-SPEC = spec_from_file_location(
-    "stage14_architecture", Path(__file__).parents[1] / "code/pipeline/stage14_architecture_search.py")
-stage14 = module_from_spec(SPEC)
-sys.modules[SPEC.name] = stage14
-SPEC.loader.exec_module(stage14)
+from milho_experiment.pipeline.stage_05_synthesis import stage14_architecture_search as stage14
 
 
 @pytest.mark.parametrize("name,channels", [

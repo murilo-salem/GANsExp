@@ -2,7 +2,7 @@
 
 O módulo não depende de PyTorch. Ele concentra a montagem auditável das
 parcelas, a ordem dos canais temporais e as métricas pareadas usadas pelo
-orquestrador em ``code/pipeline/stage12_temporal_gan_value.py``.
+orquestrador da etapa 08 de cenários temporais.
 """
 from __future__ import annotations
 

@@ -47,7 +47,7 @@ python3 code/pipeline/stage12_temporal_gan_value.py prepare \
 Execução oficial, longa:
 
 ```bash
-python3 scripts/abc_run.py --config configs/safras/2324_temporal_gan_value.toml
+python3 scripts/abc_run.py --config configs/stages/08_scenarios/2324_temporal_gan_value.toml
 ```
 
 As saídas principais são `channel_selection.csv`, `oof_predictions.csv`,

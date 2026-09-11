@@ -1,18 +1,9 @@
-from importlib.util import module_from_spec, spec_from_file_location
-from pathlib import Path
-import sys
-
 import numpy as np
 import pandas as pd
 import pytest
 
 
-SPEC = spec_from_file_location(
-    "stage15_gan_late_fusion",
-    Path(__file__).parents[1] / "code/pipeline/stage15_gan_late_fusion.py")
-stage15 = module_from_spec(SPEC)
-sys.modules[SPEC.name] = stage15
-SPEC.loader.exec_module(stage15)
+from milho_experiment.pipeline.stage_08_scenarios import stage15_gan_late_fusion as stage15
 
 
 def test_simplex_weights_are_complete_and_allow_zero_gan():

@@ -1,0 +1,17 @@
+[experiment]
+run_id = "2324_stage4_phenology"
+season = "2023_2024"
+validation_unit = "parcela"
+
+[inputs]
+orthomosaics = "{data}/raw/safra_2023_2024/orthomosaics"
+parcels = "{data}/raw/safra_2023_2024/geometry/Shape_parcelas23_24.shp"
+
+[execution]
+module = "milho_experiment.pipeline.stage_04_phenology.stage4_phenology"
+arguments = [
+  "--ortho-dir", "{data}/raw/safra_2023_2024/orthomosaics",
+  "--shapefile", "{data}/raw/safra_2023_2024/geometry/Shape_parcelas23_24.shp",
+  "--out", "{artifacts}/runs/2324_stage4_phenology/results",
+  "--size", "256",
+]

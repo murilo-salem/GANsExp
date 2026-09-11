@@ -1,8 +1,6 @@
-from importlib.util import module_from_spec, spec_from_file_location
-from pathlib import Path
-import sys
 import tempfile
 import unittest
+from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import patch
 
@@ -20,12 +18,7 @@ from milho_experiment.gan_losses import (
 )
 
 
-SPEC = spec_from_file_location(
-    "stage13_loss_ablation",
-    Path(__file__).parents[1] / "code/pipeline/stage13_temporal_gan_loss_ablation.py")
-stage13 = module_from_spec(SPEC)
-sys.modules[SPEC.name] = stage13
-SPEC.loader.exec_module(stage13)
+from milho_experiment.pipeline.stage_05_synthesis import stage13_temporal_gan_loss_ablation as stage13
 
 
 class GanLossTests(unittest.TestCase):

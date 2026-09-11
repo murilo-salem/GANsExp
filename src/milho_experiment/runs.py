@@ -19,7 +19,8 @@ def _sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
-def write_manifest(output_dir: Path, config_path: Path, inputs: Iterable[Path], command: list[str]) -> Path:
+def write_manifest(output_dir: Path, config_path: Path, inputs: Iterable[Path], command: list[str],
+                   pipeline_stage: str | None = None, depends_on: Iterable[str] = ()) -> Path:
     """Grava hashes de configuração/entradas sem copiar os dados grandes."""
     root = project_root(config_path)
     try:
@@ -30,6 +31,8 @@ def write_manifest(output_dir: Path, config_path: Path, inputs: Iterable[Path], 
         "created_at": datetime.now(UTC).isoformat(), "git_revision": revision,
         "command": command, "config": {"path": str(config_path), "sha256": _sha256(config_path)},
         "inputs": [{"path": str(path), "sha256": _sha256(path)} for path in inputs if path.is_file()],
+        "pipeline_stage": pipeline_stage,
+        "depends_on": list(depends_on),
     }
     output_dir.mkdir(parents=True, exist_ok=True)
     manifest = output_dir / "manifest.json"

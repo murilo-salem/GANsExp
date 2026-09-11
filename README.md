@@ -18,7 +18,7 @@ A unidade independente de validação é a **parcela**. Estágios repetidos, par
 | GAN V10/V13 → R1, 25/26 | L1 mínimo = 0,1200 | Aproximação de imagem; clorofila R1 não teve predição útil. |
 | GAN por fold, busca de condicionamento 23/24 | biomassa R² OOF = 0,716 (2 canais); produtividade R² OOF = 0,735 (5 canais) | O melhor conjunto de canais condicionais depende do alvo; as GANs superam o baseline "real" na fusão. |
 
-As métricas, fontes e ressalvas completas estão em [Status honesto dos resultados](code/pipeline/RESULTS_STATUS.md).
+As métricas, fontes e ressalvas completas estão em [Status honesto dos resultados](docs/results/RESULTS_STATUS.md).
 
 ## Pergunta e delineamento
 
@@ -54,7 +54,7 @@ dados brutos + geometria de parcelas
 - **Modelos agronômicos:** PLSR, Extra Trees e Elastic Net, com agrupamento por parcela e seleção restrita aos folds de treino quando aplicável.
 - **Modelos fenológicos:** Pix2Pix vegetativo→reprodutivo e variantes R2→R5; imagens geradas são avaliadas por L1, índices, textura e tarefa agronômica a jusante.
 
-Consulte a [arquitetura](docs/ARCHITECTURE.md), o [protocolo de validação](docs/VALIDATION_PROTOCOL.md) e o [README detalhado da pipeline](code/pipeline/README.md) para interfaces e comandos de cada etapa.
+Consulte a [arquitetura](docs/ARCHITECTURE.md), o [protocolo de validação](docs/VALIDATION_PROTOCOL.md) e o [guia da pipeline](docs/pipeline/README.md) para interfaces e comandos de cada etapa.
 
 ## Experimentos concluídos e em andamento
 
@@ -104,8 +104,8 @@ export ABC_ARCHIVE_DIR=/caminho/para/arquivo-historico
 Cada execução reprodutível é descrita por uma receita TOML e disparada pelo runner:
 
 ```bash
-python3 scripts/abc_run.py --config configs/safras/2324_multisafra.toml --check-inputs
-python3 scripts/abc_run.py --config configs/safras/2324_multisafra.toml
+python3 scripts/abc_run.py --config configs/stages/07_modeling/2324_multisafra.toml --check-inputs
+python3 scripts/abc_run.py --config configs/stages/07_modeling/2324_multisafra.toml
 ```
 
 O runner registra configuração, hashes de insumos e revisão Git. Resultados novos ficam em `artifacts/runs/<run-id>/`; resultados históricos ficam em `artifacts/archive/legacy/`. O fluxo de migração está em [docs/MIGRATION.md](docs/MIGRATION.md).
@@ -115,12 +115,12 @@ O runner registra configuração, hashes de insumos e revisão Git. Resultados n
 - `src/milho_experiment/` — caminhos, validação, manifestos e utilitários compartilhados.
 - `configs/` — receitas TOML para execuções reproduzíveis.
 - `scripts/abc_run.py` — ponto de entrada do fluxo novo.
-- `code/pipeline/` e `code/analysis/` — CLIs compatíveis e implementações da pesquisa.
+- `src/milho_experiment/pipeline/` — implementações organizadas pelas 11 etapas.
 - `artifacts/` — saídas recentes e índice do arquivo histórico; binários grandes permanecem externos.
 - `dataset_registry/` — inventário, checksums e quarentena de ativos externos.
 - `legacy/preprocessing/` — pré-processamento preservado para referência, não parte do fluxo oficial.
 
-- [Status honesto dos resultados](code/pipeline/RESULTS_STATUS.md)
+- [Status honesto dos resultados](docs/results/RESULTS_STATUS.md)
 - [Catálogo de experimentos](docs/EXPERIMENT_CATALOG.md)
 - [Protocolo de validação](docs/VALIDATION_PROTOCOL.md)
 - [Arquitetura](docs/ARCHITECTURE.md)

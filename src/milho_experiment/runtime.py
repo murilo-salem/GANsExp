@@ -30,7 +30,7 @@ class ProjectPaths:
         root = project_root(root)
         data = Path(os.environ.get("ABC_DATA_DIR", root / "data")).expanduser().resolve()
         artifacts = Path(os.environ.get("ABC_ARTIFACTS_DIR", root / "artifacts")).expanduser().resolve()
-        vendor = root / "pytorch-CycleGAN-and-pix2pix"
+        vendor = Path(os.environ.get("ABC_PIX2PIX_DIR", root / "pytorch-CycleGAN-and-pix2pix")).expanduser().resolve()
         archive = Path(os.environ.get("ABC_ARCHIVE_DIR", root.parent / "ABC-archive")).expanduser().resolve()
         return cls(root=root, data=data, artifacts=artifacts, vendor_gan=vendor, archive=archive)
 
@@ -53,6 +53,6 @@ def load_config(path: str | Path) -> dict[str, Any]:
     for required in ("experiment", "execution"):
         if required not in config:
             raise ValueError(f"configuração inválida: seção [{required}] ausente em {path}")
-    if "entrypoint" not in config["execution"]:
-        raise ValueError(f"configuração inválida: execution.entrypoint ausente em {path}")
+    if "module" not in config["execution"]:
+        raise ValueError(f"configuração inválida: execution.module ausente em {path}")
     return config

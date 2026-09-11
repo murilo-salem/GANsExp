@@ -1,5 +1,4 @@
 from pathlib import Path
-from importlib.util import module_from_spec, spec_from_file_location
 import tempfile
 import unittest
 
@@ -15,10 +14,7 @@ from milho_experiment.temporal import (
     temporal_input,
 )
 
-STAGE12_SPEC = spec_from_file_location(
-    "stage12_temporal", Path(__file__).parents[1] / "code/pipeline/stage12_temporal_gan_value.py")
-stage12 = module_from_spec(STAGE12_SPEC)
-STAGE12_SPEC.loader.exec_module(stage12)
+from milho_experiment.pipeline.stage_08_scenarios import stage12_temporal_gan_value as stage12
 
 
 class TemporalDatasetTests(unittest.TestCase):

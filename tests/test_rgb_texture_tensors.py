@@ -1,4 +1,3 @@
-import sys
 import tempfile
 import unittest
 from pathlib import Path
@@ -6,8 +5,7 @@ from pathlib import Path
 import numpy as np
 import tifffile
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "code" / "pipeline"))
-import build_rgb_texture_tensors as tensors
+from milho_experiment.pipeline.stage_03_attributes import build_rgb_texture_tensors as tensors
 
 
 class RgbTextureTensorTests(unittest.TestCase):

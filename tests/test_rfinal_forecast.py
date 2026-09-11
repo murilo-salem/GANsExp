@@ -1,14 +1,10 @@
 """Contratos do estágio R2->R5 que impedem vazamento temporal."""
-from importlib.util import module_from_spec, spec_from_file_location
-from pathlib import Path
-import sys
 
 import numpy as np
 import pandas as pd
 
 
-SPEC = spec_from_file_location("rfinal", Path(__file__).parents[1] / "code/pipeline/stage9_rfinal_forecast.py")
-MODULE = module_from_spec(SPEC); sys.modules[SPEC.name] = MODULE; SPEC.loader.exec_module(MODULE)
+from milho_experiment.pipeline.stage_05_synthesis import stage9_rfinal_forecast as MODULE
 
 
 def test_affine_normalizer_maps_target_median_to_source():

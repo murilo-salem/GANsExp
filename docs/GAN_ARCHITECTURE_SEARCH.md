@@ -19,7 +19,7 @@ são promediados, formando 24 unidades de campo. O relatório separa `rs_only`,
 
 ```bash
 python3 scripts/abc_run.py \
-  --config configs/safras/2223_gan_architecture_search.toml \
+  --config configs/stages/05_synthesis/2223_gan_architecture_search.toml \
   --check-inputs
 ```
 
@@ -30,7 +30,7 @@ A rerun corrigida e reduzida usa:
 
 ```bash
 python3 scripts/abc_run.py \
-  --config configs/safras/2223_gan_architecture_search_masked.toml \
+  --config configs/stages/05_synthesis/2223_gan_architecture_search_masked.toml \
   --check-inputs
 ```
 

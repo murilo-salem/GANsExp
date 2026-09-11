@@ -3,7 +3,7 @@ import tempfile
 import unittest
 
 from milho_experiment.runtime import ProjectPaths, load_config
-from milho_experiment.validation import assert_target_not_in_features, grouped_folds
+from milho_experiment.pipeline.stage_09_validation.validation import assert_target_not_in_features, grouped_folds
 
 
 class RuntimeTests(unittest.TestCase):
@@ -19,7 +19,7 @@ class RuntimeTests(unittest.TestCase):
             assert_target_not_in_features(["NDVI", "Produtividade"], "Produtividade")
         assert_target_not_in_features(["NDVI", "phys_Produtividade"], "Produtividade", hybrid=True)
 
-    def test_config_requires_execution_entrypoint(self):
+    def test_config_requires_execution_module(self):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "bad.toml"
             path.write_text("[experiment]\nrun_id='x'\n[execution]\n")
@@ -29,4 +29,3 @@ class RuntimeTests(unittest.TestCase):
     def test_paths_expand_environment_independent_markers(self):
         paths = ProjectPaths.discover(Path.cwd())
         self.assertEqual(paths.expand("{root}/docs").parent, paths.root)
-

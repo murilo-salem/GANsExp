@@ -40,7 +40,7 @@ persistentes são as tabelas e métricas produzidas após a avaliação em memó
 
 ```bash
 python3 scripts/abc_run.py \
-  --config configs/safras/2324_temporal_gan_loss_ablation.toml
+  --config configs/stages/05_synthesis/2324_temporal_gan_loss_ablation.toml
 ```
 
 Para conferir os dados sem treinar:

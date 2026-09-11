@@ -20,6 +20,13 @@ __pycache__/
 .venv/
 venv/
 env/
+.venv-*/
+*.venv/
+
+# Runtime state and external framework checkout
+*.pid
+*.resume.pth
+code/
 
 # Cache de token MSAL (SharePoint) - contem credenciais
 .msal_token_cache.json
