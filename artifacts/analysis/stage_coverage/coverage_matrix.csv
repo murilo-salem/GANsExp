@@ -1,0 +1,626 @@
+safra,estagio,familia,atributo,n_parcelas,n_calculados,pct
+2022_2023,V8,Índices espectrais,NDVI,24,24,100
+2022_2023,V8,Índices espectrais,GNDVI,24,24,100
+2022_2023,V8,Índices espectrais,NDRE,24,24,100
+2022_2023,V8,Índices espectrais,CIrededge,24,24,100
+2022_2023,V8,Índices espectrais,SAVI,24,24,100
+2022_2023,V8,Índices espectrais,EVI,24,24,100
+2022_2023,V8,Índices espectrais,VARI,24,24,100
+2022_2023,V8,Índices espectrais,TGI,24,24,100
+2022_2023,V8,Estatísticas espectrais,spec_mean,24,24,100
+2022_2023,V8,Estatísticas espectrais,spec_std,24,24,100
+2022_2023,V8,Estatísticas espectrais,spec_p10,24,24,100
+2022_2023,V8,Estatísticas espectrais,spec_p50,24,24,100
+2022_2023,V8,Estatísticas espectrais,spec_p90,24,24,100
+2022_2023,V8,GLCM global,glcm_asm,24,24,100
+2022_2023,V8,GLCM global,glcm_contrast,24,24,100
+2022_2023,V8,GLCM global,glcm_correlation,24,24,100
+2022_2023,V8,GLCM global,glcm_variance,24,24,100
+2022_2023,V8,GLCM global,glcm_idm,24,24,100
+2022_2023,V8,GLCM global,glcm_sum_average,24,24,100
+2022_2023,V8,GLCM global,glcm_sum_variance,24,24,100
+2022_2023,V8,GLCM global,glcm_sum_entropy,24,24,100
+2022_2023,V8,GLCM global,glcm_entropy,24,24,100
+2022_2023,V8,GLCM global,glcm_diff_entropy,24,24,100
+2022_2023,V8,GLCM global,glcm_imc1,24,24,100
+2022_2023,V8,GLCM global,glcm_imc2,24,24,100
+2022_2023,V8,GLCM global,glcm_mcc,24,24,100
+2022_2023,V8,GLCM global,glcm_dissimilarity,24,24,100
+2022_2023,V8,GLCM global,glcm_inertia,24,24,100
+2022_2023,V8,GLCM global,glcm_cluster_shade,24,24,100
+2022_2023,V8,GLCM global,glcm_cluster_prominence,24,24,100
+2022_2023,V8,GLCM global,glcm_homogeneity,24,24,100
+2022_2023,V8,GLCM janela w3,glcmw3_asm,24,24,100
+2022_2023,V8,GLCM janela w3,glcmw3_contrast,24,24,100
+2022_2023,V8,GLCM janela w3,glcmw3_entropy,24,24,100
+2022_2023,V8,GLCM janela w3,glcmw3_correlation,24,24,100
+2022_2023,V8,GLCM janela w3,glcmw3_homogeneity,24,24,100
+2022_2023,V8,GLCM janela w5,glcmw5_asm,24,24,100
+2022_2023,V8,GLCM janela w5,glcmw5_contrast,24,24,100
+2022_2023,V8,GLCM janela w5,glcmw5_entropy,24,24,100
+2022_2023,V8,GLCM janela w5,glcmw5_correlation,24,24,100
+2022_2023,V8,GLCM janela w5,glcmw5_homogeneity,24,24,100
+2022_2023,V8,GLCM janela w7,glcmw7_asm,24,24,100
+2022_2023,V8,GLCM janela w7,glcmw7_contrast,24,24,100
+2022_2023,V8,GLCM janela w7,glcmw7_entropy,24,24,100
+2022_2023,V8,GLCM janela w7,glcmw7_correlation,24,24,100
+2022_2023,V8,GLCM janela w7,glcmw7_homogeneity,24,24,100
+2022_2023,V11,Índices espectrais,NDVI,24,24,100
+2022_2023,V11,Índices espectrais,GNDVI,24,24,100
+2022_2023,V11,Índices espectrais,NDRE,24,24,100
+2022_2023,V11,Índices espectrais,CIrededge,24,24,100
+2022_2023,V11,Índices espectrais,SAVI,24,24,100
+2022_2023,V11,Índices espectrais,EVI,24,24,100
+2022_2023,V11,Índices espectrais,VARI,24,24,100
+2022_2023,V11,Índices espectrais,TGI,24,24,100
+2022_2023,V11,Estatísticas espectrais,spec_mean,24,24,100
+2022_2023,V11,Estatísticas espectrais,spec_std,24,24,100
+2022_2023,V11,Estatísticas espectrais,spec_p10,24,24,100
+2022_2023,V11,Estatísticas espectrais,spec_p50,24,24,100
+2022_2023,V11,Estatísticas espectrais,spec_p90,24,24,100
+2022_2023,V11,GLCM global,glcm_asm,24,24,100
+2022_2023,V11,GLCM global,glcm_contrast,24,24,100
+2022_2023,V11,GLCM global,glcm_correlation,24,24,100
+2022_2023,V11,GLCM global,glcm_variance,24,24,100
+2022_2023,V11,GLCM global,glcm_idm,24,24,100
+2022_2023,V11,GLCM global,glcm_sum_average,24,24,100
+2022_2023,V11,GLCM global,glcm_sum_variance,24,24,100
+2022_2023,V11,GLCM global,glcm_sum_entropy,24,24,100
+2022_2023,V11,GLCM global,glcm_entropy,24,24,100
+2022_2023,V11,GLCM global,glcm_diff_entropy,24,24,100
+2022_2023,V11,GLCM global,glcm_imc1,24,24,100
+2022_2023,V11,GLCM global,glcm_imc2,24,24,100
+2022_2023,V11,GLCM global,glcm_mcc,24,24,100
+2022_2023,V11,GLCM global,glcm_dissimilarity,24,24,100
+2022_2023,V11,GLCM global,glcm_inertia,24,24,100
+2022_2023,V11,GLCM global,glcm_cluster_shade,24,24,100
+2022_2023,V11,GLCM global,glcm_cluster_prominence,24,24,100
+2022_2023,V11,GLCM global,glcm_homogeneity,24,24,100
+2022_2023,V11,GLCM janela w3,glcmw3_asm,24,24,100
+2022_2023,V11,GLCM janela w3,glcmw3_contrast,24,24,100
+2022_2023,V11,GLCM janela w3,glcmw3_entropy,24,24,100
+2022_2023,V11,GLCM janela w3,glcmw3_correlation,24,24,100
+2022_2023,V11,GLCM janela w3,glcmw3_homogeneity,24,24,100
+2022_2023,V11,GLCM janela w5,glcmw5_asm,24,24,100
+2022_2023,V11,GLCM janela w5,glcmw5_contrast,24,24,100
+2022_2023,V11,GLCM janela w5,glcmw5_entropy,24,24,100
+2022_2023,V11,GLCM janela w5,glcmw5_correlation,24,24,100
+2022_2023,V11,GLCM janela w5,glcmw5_homogeneity,24,24,100
+2022_2023,V11,GLCM janela w7,glcmw7_asm,24,24,100
+2022_2023,V11,GLCM janela w7,glcmw7_contrast,24,24,100
+2022_2023,V11,GLCM janela w7,glcmw7_entropy,24,24,100
+2022_2023,V11,GLCM janela w7,glcmw7_correlation,24,24,100
+2022_2023,V11,GLCM janela w7,glcmw7_homogeneity,24,24,100
+2022_2023,V18,Índices espectrais,NDVI,24,24,100
+2022_2023,V18,Índices espectrais,GNDVI,24,24,100
+2022_2023,V18,Índices espectrais,NDRE,24,24,100
+2022_2023,V18,Índices espectrais,CIrededge,24,24,100
+2022_2023,V18,Índices espectrais,SAVI,24,24,100
+2022_2023,V18,Índices espectrais,EVI,24,24,100
+2022_2023,V18,Índices espectrais,VARI,24,24,100
+2022_2023,V18,Índices espectrais,TGI,24,24,100
+2022_2023,V18,Estatísticas espectrais,spec_mean,24,24,100
+2022_2023,V18,Estatísticas espectrais,spec_std,24,24,100
+2022_2023,V18,Estatísticas espectrais,spec_p10,24,24,100
+2022_2023,V18,Estatísticas espectrais,spec_p50,24,24,100
+2022_2023,V18,Estatísticas espectrais,spec_p90,24,24,100
+2022_2023,V18,GLCM global,glcm_asm,24,24,100
+2022_2023,V18,GLCM global,glcm_contrast,24,24,100
+2022_2023,V18,GLCM global,glcm_correlation,24,24,100
+2022_2023,V18,GLCM global,glcm_variance,24,24,100
+2022_2023,V18,GLCM global,glcm_idm,24,24,100
+2022_2023,V18,GLCM global,glcm_sum_average,24,24,100
+2022_2023,V18,GLCM global,glcm_sum_variance,24,24,100
+2022_2023,V18,GLCM global,glcm_sum_entropy,24,24,100
+2022_2023,V18,GLCM global,glcm_entropy,24,24,100
+2022_2023,V18,GLCM global,glcm_diff_entropy,24,24,100
+2022_2023,V18,GLCM global,glcm_imc1,24,24,100
+2022_2023,V18,GLCM global,glcm_imc2,24,24,100
+2022_2023,V18,GLCM global,glcm_mcc,24,24,100
+2022_2023,V18,GLCM global,glcm_dissimilarity,24,24,100
+2022_2023,V18,GLCM global,glcm_inertia,24,24,100
+2022_2023,V18,GLCM global,glcm_cluster_shade,24,24,100
+2022_2023,V18,GLCM global,glcm_cluster_prominence,24,24,100
+2022_2023,V18,GLCM global,glcm_homogeneity,24,24,100
+2022_2023,V18,GLCM janela w3,glcmw3_asm,24,24,100
+2022_2023,V18,GLCM janela w3,glcmw3_contrast,24,24,100
+2022_2023,V18,GLCM janela w3,glcmw3_entropy,24,24,100
+2022_2023,V18,GLCM janela w3,glcmw3_correlation,24,24,100
+2022_2023,V18,GLCM janela w3,glcmw3_homogeneity,24,24,100
+2022_2023,V18,GLCM janela w5,glcmw5_asm,24,24,100
+2022_2023,V18,GLCM janela w5,glcmw5_contrast,24,24,100
+2022_2023,V18,GLCM janela w5,glcmw5_entropy,24,24,100
+2022_2023,V18,GLCM janela w5,glcmw5_correlation,24,24,100
+2022_2023,V18,GLCM janela w5,glcmw5_homogeneity,24,24,100
+2022_2023,V18,GLCM janela w7,glcmw7_asm,24,24,100
+2022_2023,V18,GLCM janela w7,glcmw7_contrast,24,24,100
+2022_2023,V18,GLCM janela w7,glcmw7_entropy,24,24,100
+2022_2023,V18,GLCM janela w7,glcmw7_correlation,24,24,100
+2022_2023,V18,GLCM janela w7,glcmw7_homogeneity,24,24,100
+2022_2023,R2,Índices espectrais,NDVI,24,24,100
+2022_2023,R2,Índices espectrais,GNDVI,24,24,100
+2022_2023,R2,Índices espectrais,NDRE,24,24,100
+2022_2023,R2,Índices espectrais,CIrededge,24,24,100
+2022_2023,R2,Índices espectrais,SAVI,24,24,100
+2022_2023,R2,Índices espectrais,EVI,24,24,100
+2022_2023,R2,Índices espectrais,VARI,24,24,100
+2022_2023,R2,Índices espectrais,TGI,24,24,100
+2022_2023,R2,Estatísticas espectrais,spec_mean,24,24,100
+2022_2023,R2,Estatísticas espectrais,spec_std,24,24,100
+2022_2023,R2,Estatísticas espectrais,spec_p10,24,24,100
+2022_2023,R2,Estatísticas espectrais,spec_p50,24,24,100
+2022_2023,R2,Estatísticas espectrais,spec_p90,24,24,100
+2022_2023,R2,GLCM global,glcm_asm,24,24,100
+2022_2023,R2,GLCM global,glcm_contrast,24,24,100
+2022_2023,R2,GLCM global,glcm_correlation,24,24,100
+2022_2023,R2,GLCM global,glcm_variance,24,24,100
+2022_2023,R2,GLCM global,glcm_idm,24,24,100
+2022_2023,R2,GLCM global,glcm_sum_average,24,24,100
+2022_2023,R2,GLCM global,glcm_sum_variance,24,24,100
+2022_2023,R2,GLCM global,glcm_sum_entropy,24,24,100
+2022_2023,R2,GLCM global,glcm_entropy,24,24,100
+2022_2023,R2,GLCM global,glcm_diff_entropy,24,24,100
+2022_2023,R2,GLCM global,glcm_imc1,24,24,100
+2022_2023,R2,GLCM global,glcm_imc2,24,24,100
+2022_2023,R2,GLCM global,glcm_mcc,24,24,100
+2022_2023,R2,GLCM global,glcm_dissimilarity,24,24,100
+2022_2023,R2,GLCM global,glcm_inertia,24,24,100
+2022_2023,R2,GLCM global,glcm_cluster_shade,24,24,100
+2022_2023,R2,GLCM global,glcm_cluster_prominence,24,24,100
+2022_2023,R2,GLCM global,glcm_homogeneity,24,24,100
+2022_2023,R2,GLCM janela w3,glcmw3_asm,24,24,100
+2022_2023,R2,GLCM janela w3,glcmw3_contrast,24,24,100
+2022_2023,R2,GLCM janela w3,glcmw3_entropy,24,24,100
+2022_2023,R2,GLCM janela w3,glcmw3_correlation,24,24,100
+2022_2023,R2,GLCM janela w3,glcmw3_homogeneity,24,24,100
+2022_2023,R2,GLCM janela w5,glcmw5_asm,24,24,100
+2022_2023,R2,GLCM janela w5,glcmw5_contrast,24,24,100
+2022_2023,R2,GLCM janela w5,glcmw5_entropy,24,24,100
+2022_2023,R2,GLCM janela w5,glcmw5_correlation,24,24,100
+2022_2023,R2,GLCM janela w5,glcmw5_homogeneity,24,24,100
+2022_2023,R2,GLCM janela w7,glcmw7_asm,24,24,100
+2022_2023,R2,GLCM janela w7,glcmw7_contrast,24,24,100
+2022_2023,R2,GLCM janela w7,glcmw7_entropy,24,24,100
+2022_2023,R2,GLCM janela w7,glcmw7_correlation,24,24,100
+2022_2023,R2,GLCM janela w7,glcmw7_homogeneity,24,24,100
+2022_2023,R5,Índices espectrais,NDVI,24,24,100
+2022_2023,R5,Índices espectrais,GNDVI,24,24,100
+2022_2023,R5,Índices espectrais,NDRE,24,24,100
+2022_2023,R5,Índices espectrais,CIrededge,24,24,100
+2022_2023,R5,Índices espectrais,SAVI,24,24,100
+2022_2023,R5,Índices espectrais,EVI,24,24,100
+2022_2023,R5,Índices espectrais,VARI,24,24,100
+2022_2023,R5,Índices espectrais,TGI,24,24,100
+2022_2023,R5,Estatísticas espectrais,spec_mean,24,24,100
+2022_2023,R5,Estatísticas espectrais,spec_std,24,24,100
+2022_2023,R5,Estatísticas espectrais,spec_p10,24,24,100
+2022_2023,R5,Estatísticas espectrais,spec_p50,24,24,100
+2022_2023,R5,Estatísticas espectrais,spec_p90,24,24,100
+2022_2023,R5,GLCM global,glcm_asm,24,24,100
+2022_2023,R5,GLCM global,glcm_contrast,24,24,100
+2022_2023,R5,GLCM global,glcm_correlation,24,24,100
+2022_2023,R5,GLCM global,glcm_variance,24,24,100
+2022_2023,R5,GLCM global,glcm_idm,24,24,100
+2022_2023,R5,GLCM global,glcm_sum_average,24,24,100
+2022_2023,R5,GLCM global,glcm_sum_variance,24,24,100
+2022_2023,R5,GLCM global,glcm_sum_entropy,24,24,100
+2022_2023,R5,GLCM global,glcm_entropy,24,24,100
+2022_2023,R5,GLCM global,glcm_diff_entropy,24,24,100
+2022_2023,R5,GLCM global,glcm_imc1,24,24,100
+2022_2023,R5,GLCM global,glcm_imc2,24,24,100
+2022_2023,R5,GLCM global,glcm_mcc,24,24,100
+2022_2023,R5,GLCM global,glcm_dissimilarity,24,24,100
+2022_2023,R5,GLCM global,glcm_inertia,24,24,100
+2022_2023,R5,GLCM global,glcm_cluster_shade,24,24,100
+2022_2023,R5,GLCM global,glcm_cluster_prominence,24,24,100
+2022_2023,R5,GLCM global,glcm_homogeneity,24,24,100
+2022_2023,R5,GLCM janela w3,glcmw3_asm,24,24,100
+2022_2023,R5,GLCM janela w3,glcmw3_contrast,24,24,100
+2022_2023,R5,GLCM janela w3,glcmw3_entropy,24,24,100
+2022_2023,R5,GLCM janela w3,glcmw3_correlation,24,24,100
+2022_2023,R5,GLCM janela w3,glcmw3_homogeneity,24,24,100
+2022_2023,R5,GLCM janela w5,glcmw5_asm,24,24,100
+2022_2023,R5,GLCM janela w5,glcmw5_contrast,24,24,100
+2022_2023,R5,GLCM janela w5,glcmw5_entropy,24,24,100
+2022_2023,R5,GLCM janela w5,glcmw5_correlation,24,24,100
+2022_2023,R5,GLCM janela w5,glcmw5_homogeneity,24,24,100
+2022_2023,R5,GLCM janela w7,glcmw7_asm,24,24,100
+2022_2023,R5,GLCM janela w7,glcmw7_contrast,24,24,100
+2022_2023,R5,GLCM janela w7,glcmw7_entropy,24,24,100
+2022_2023,R5,GLCM janela w7,glcmw7_correlation,24,24,100
+2022_2023,R5,GLCM janela w7,glcmw7_homogeneity,24,24,100
+2023_2024,V6,Índices espectrais,NDVI,24,24,100
+2023_2024,V6,Índices espectrais,GNDVI,24,24,100
+2023_2024,V6,Índices espectrais,NDRE,24,24,100
+2023_2024,V6,Índices espectrais,CIrededge,24,24,100
+2023_2024,V6,Índices espectrais,SAVI,24,24,100
+2023_2024,V6,Índices espectrais,EVI,24,24,100
+2023_2024,V6,Índices espectrais,VARI,24,24,100
+2023_2024,V6,Índices espectrais,TGI,24,24,100
+2023_2024,V6,Estatísticas espectrais,spec_mean,24,24,100
+2023_2024,V6,Estatísticas espectrais,spec_std,24,24,100
+2023_2024,V6,Estatísticas espectrais,spec_p10,24,24,100
+2023_2024,V6,Estatísticas espectrais,spec_p50,24,24,100
+2023_2024,V6,Estatísticas espectrais,spec_p90,24,24,100
+2023_2024,V6,GLCM global,glcm_asm,24,24,100
+2023_2024,V6,GLCM global,glcm_contrast,24,24,100
+2023_2024,V6,GLCM global,glcm_correlation,24,24,100
+2023_2024,V6,GLCM global,glcm_variance,24,24,100
+2023_2024,V6,GLCM global,glcm_idm,24,24,100
+2023_2024,V6,GLCM global,glcm_sum_average,24,24,100
+2023_2024,V6,GLCM global,glcm_sum_variance,24,24,100
+2023_2024,V6,GLCM global,glcm_sum_entropy,24,24,100
+2023_2024,V6,GLCM global,glcm_entropy,24,24,100
+2023_2024,V6,GLCM global,glcm_diff_entropy,24,24,100
+2023_2024,V6,GLCM global,glcm_imc1,24,24,100
+2023_2024,V6,GLCM global,glcm_imc2,24,24,100
+2023_2024,V6,GLCM global,glcm_mcc,24,24,100
+2023_2024,V6,GLCM global,glcm_dissimilarity,24,24,100
+2023_2024,V6,GLCM global,glcm_inertia,24,24,100
+2023_2024,V6,GLCM global,glcm_cluster_shade,24,24,100
+2023_2024,V6,GLCM global,glcm_cluster_prominence,24,24,100
+2023_2024,V6,GLCM global,glcm_homogeneity,24,24,100
+2023_2024,V6,GLCM janela w3,glcmw3_asm,24,24,100
+2023_2024,V6,GLCM janela w3,glcmw3_contrast,24,24,100
+2023_2024,V6,GLCM janela w3,glcmw3_entropy,24,24,100
+2023_2024,V6,GLCM janela w3,glcmw3_correlation,24,24,100
+2023_2024,V6,GLCM janela w3,glcmw3_homogeneity,24,24,100
+2023_2024,V6,GLCM janela w5,glcmw5_asm,24,24,100
+2023_2024,V6,GLCM janela w5,glcmw5_contrast,24,24,100
+2023_2024,V6,GLCM janela w5,glcmw5_entropy,24,24,100
+2023_2024,V6,GLCM janela w5,glcmw5_correlation,24,24,100
+2023_2024,V6,GLCM janela w5,glcmw5_homogeneity,24,24,100
+2023_2024,V6,GLCM janela w7,glcmw7_asm,24,24,100
+2023_2024,V6,GLCM janela w7,glcmw7_contrast,24,24,100
+2023_2024,V6,GLCM janela w7,glcmw7_entropy,24,24,100
+2023_2024,V6,GLCM janela w7,glcmw7_correlation,24,24,100
+2023_2024,V6,GLCM janela w7,glcmw7_homogeneity,24,24,100
+2023_2024,V6,GLCM RGB global,rgb_glcm_asm,24,24,100
+2023_2024,V6,GLCM RGB global,rgb_glcm_contrast,24,24,100
+2023_2024,V6,GLCM RGB global,rgb_glcm_correlation,24,24,100
+2023_2024,V6,GLCM RGB global,rgb_glcm_variance,24,24,100
+2023_2024,V6,GLCM RGB global,rgb_glcm_idm,24,24,100
+2023_2024,V6,GLCM RGB global,rgb_glcm_sum_average,24,24,100
+2023_2024,V6,GLCM RGB global,rgb_glcm_sum_variance,24,24,100
+2023_2024,V6,GLCM RGB global,rgb_glcm_sum_entropy,24,24,100
+2023_2024,V6,GLCM RGB global,rgb_glcm_entropy,24,24,100
+2023_2024,V6,GLCM RGB global,rgb_glcm_diff_entropy,24,24,100
+2023_2024,V6,GLCM RGB global,rgb_glcm_imc1,24,24,100
+2023_2024,V6,GLCM RGB global,rgb_glcm_imc2,24,24,100
+2023_2024,V6,GLCM RGB global,rgb_glcm_mcc,24,24,100
+2023_2024,V6,GLCM RGB global,rgb_glcm_dissimilarity,24,24,100
+2023_2024,V6,GLCM RGB global,rgb_glcm_inertia,24,24,100
+2023_2024,V6,GLCM RGB global,rgb_glcm_cluster_shade,24,24,100
+2023_2024,V6,GLCM RGB global,rgb_glcm_cluster_prominence,24,24,100
+2023_2024,V6,GLCM RGB global,rgb_glcm_homogeneity,24,24,100
+2023_2024,V6,GLCM RGB janela w3,rgb_glcmw3_asm,24,24,100
+2023_2024,V6,GLCM RGB janela w3,rgb_glcmw3_contrast,24,24,100
+2023_2024,V6,GLCM RGB janela w3,rgb_glcmw3_entropy,24,24,100
+2023_2024,V6,GLCM RGB janela w3,rgb_glcmw3_correlation,24,24,100
+2023_2024,V6,GLCM RGB janela w3,rgb_glcmw3_homogeneity,24,24,100
+2023_2024,V6,GLCM RGB janela w5,rgb_glcmw5_asm,24,24,100
+2023_2024,V6,GLCM RGB janela w5,rgb_glcmw5_contrast,24,24,100
+2023_2024,V6,GLCM RGB janela w5,rgb_glcmw5_entropy,24,24,100
+2023_2024,V6,GLCM RGB janela w5,rgb_glcmw5_correlation,24,24,100
+2023_2024,V6,GLCM RGB janela w5,rgb_glcmw5_homogeneity,24,24,100
+2023_2024,V6,GLCM RGB janela w7,rgb_glcmw7_asm,24,24,100
+2023_2024,V6,GLCM RGB janela w7,rgb_glcmw7_contrast,24,24,100
+2023_2024,V6,GLCM RGB janela w7,rgb_glcmw7_entropy,24,24,100
+2023_2024,V6,GLCM RGB janela w7,rgb_glcmw7_correlation,24,24,100
+2023_2024,V6,GLCM RGB janela w7,rgb_glcmw7_homogeneity,24,24,100
+2023_2024,V8,Índices espectrais,NDVI,24,24,100
+2023_2024,V8,Índices espectrais,GNDVI,24,24,100
+2023_2024,V8,Índices espectrais,NDRE,24,24,100
+2023_2024,V8,Índices espectrais,CIrededge,24,24,100
+2023_2024,V8,Índices espectrais,SAVI,24,24,100
+2023_2024,V8,Índices espectrais,EVI,24,24,100
+2023_2024,V8,Índices espectrais,VARI,24,24,100
+2023_2024,V8,Índices espectrais,TGI,24,24,100
+2023_2024,V8,Estatísticas espectrais,spec_mean,24,24,100
+2023_2024,V8,Estatísticas espectrais,spec_std,24,24,100
+2023_2024,V8,Estatísticas espectrais,spec_p10,24,24,100
+2023_2024,V8,Estatísticas espectrais,spec_p50,24,24,100
+2023_2024,V8,Estatísticas espectrais,spec_p90,24,24,100
+2023_2024,V8,GLCM global,glcm_asm,24,24,100
+2023_2024,V8,GLCM global,glcm_contrast,24,24,100
+2023_2024,V8,GLCM global,glcm_correlation,24,24,100
+2023_2024,V8,GLCM global,glcm_variance,24,24,100
+2023_2024,V8,GLCM global,glcm_idm,24,24,100
+2023_2024,V8,GLCM global,glcm_sum_average,24,24,100
+2023_2024,V8,GLCM global,glcm_sum_variance,24,24,100
+2023_2024,V8,GLCM global,glcm_sum_entropy,24,24,100
+2023_2024,V8,GLCM global,glcm_entropy,24,24,100
+2023_2024,V8,GLCM global,glcm_diff_entropy,24,24,100
+2023_2024,V8,GLCM global,glcm_imc1,24,24,100
+2023_2024,V8,GLCM global,glcm_imc2,24,24,100
+2023_2024,V8,GLCM global,glcm_mcc,24,24,100
+2023_2024,V8,GLCM global,glcm_dissimilarity,24,24,100
+2023_2024,V8,GLCM global,glcm_inertia,24,24,100
+2023_2024,V8,GLCM global,glcm_cluster_shade,24,24,100
+2023_2024,V8,GLCM global,glcm_cluster_prominence,24,24,100
+2023_2024,V8,GLCM global,glcm_homogeneity,24,24,100
+2023_2024,V8,GLCM janela w3,glcmw3_asm,24,24,100
+2023_2024,V8,GLCM janela w3,glcmw3_contrast,24,24,100
+2023_2024,V8,GLCM janela w3,glcmw3_entropy,24,24,100
+2023_2024,V8,GLCM janela w3,glcmw3_correlation,24,24,100
+2023_2024,V8,GLCM janela w3,glcmw3_homogeneity,24,24,100
+2023_2024,V8,GLCM janela w5,glcmw5_asm,24,24,100
+2023_2024,V8,GLCM janela w5,glcmw5_contrast,24,24,100
+2023_2024,V8,GLCM janela w5,glcmw5_entropy,24,24,100
+2023_2024,V8,GLCM janela w5,glcmw5_correlation,24,24,100
+2023_2024,V8,GLCM janela w5,glcmw5_homogeneity,24,24,100
+2023_2024,V8,GLCM janela w7,glcmw7_asm,24,24,100
+2023_2024,V8,GLCM janela w7,glcmw7_contrast,24,24,100
+2023_2024,V8,GLCM janela w7,glcmw7_entropy,24,24,100
+2023_2024,V8,GLCM janela w7,glcmw7_correlation,24,24,100
+2023_2024,V8,GLCM janela w7,glcmw7_homogeneity,24,24,100
+2023_2024,V8,GLCM RGB global,rgb_glcm_asm,24,24,100
+2023_2024,V8,GLCM RGB global,rgb_glcm_contrast,24,24,100
+2023_2024,V8,GLCM RGB global,rgb_glcm_correlation,24,24,100
+2023_2024,V8,GLCM RGB global,rgb_glcm_variance,24,24,100
+2023_2024,V8,GLCM RGB global,rgb_glcm_idm,24,24,100
+2023_2024,V8,GLCM RGB global,rgb_glcm_sum_average,24,24,100
+2023_2024,V8,GLCM RGB global,rgb_glcm_sum_variance,24,24,100
+2023_2024,V8,GLCM RGB global,rgb_glcm_sum_entropy,24,24,100
+2023_2024,V8,GLCM RGB global,rgb_glcm_entropy,24,24,100
+2023_2024,V8,GLCM RGB global,rgb_glcm_diff_entropy,24,24,100
+2023_2024,V8,GLCM RGB global,rgb_glcm_imc1,24,24,100
+2023_2024,V8,GLCM RGB global,rgb_glcm_imc2,24,24,100
+2023_2024,V8,GLCM RGB global,rgb_glcm_mcc,24,24,100
+2023_2024,V8,GLCM RGB global,rgb_glcm_dissimilarity,24,24,100
+2023_2024,V8,GLCM RGB global,rgb_glcm_inertia,24,24,100
+2023_2024,V8,GLCM RGB global,rgb_glcm_cluster_shade,24,24,100
+2023_2024,V8,GLCM RGB global,rgb_glcm_cluster_prominence,24,24,100
+2023_2024,V8,GLCM RGB global,rgb_glcm_homogeneity,24,24,100
+2023_2024,V8,GLCM RGB janela w3,rgb_glcmw3_asm,24,24,100
+2023_2024,V8,GLCM RGB janela w3,rgb_glcmw3_contrast,24,24,100
+2023_2024,V8,GLCM RGB janela w3,rgb_glcmw3_entropy,24,24,100
+2023_2024,V8,GLCM RGB janela w3,rgb_glcmw3_correlation,24,24,100
+2023_2024,V8,GLCM RGB janela w3,rgb_glcmw3_homogeneity,24,24,100
+2023_2024,V8,GLCM RGB janela w5,rgb_glcmw5_asm,24,24,100
+2023_2024,V8,GLCM RGB janela w5,rgb_glcmw5_contrast,24,24,100
+2023_2024,V8,GLCM RGB janela w5,rgb_glcmw5_entropy,24,24,100
+2023_2024,V8,GLCM RGB janela w5,rgb_glcmw5_correlation,24,24,100
+2023_2024,V8,GLCM RGB janela w5,rgb_glcmw5_homogeneity,24,24,100
+2023_2024,V8,GLCM RGB janela w7,rgb_glcmw7_asm,24,24,100
+2023_2024,V8,GLCM RGB janela w7,rgb_glcmw7_contrast,24,24,100
+2023_2024,V8,GLCM RGB janela w7,rgb_glcmw7_entropy,24,24,100
+2023_2024,V8,GLCM RGB janela w7,rgb_glcmw7_correlation,24,24,100
+2023_2024,V8,GLCM RGB janela w7,rgb_glcmw7_homogeneity,24,24,100
+2023_2024,V13,Índices espectrais,NDVI,24,24,100
+2023_2024,V13,Índices espectrais,GNDVI,24,24,100
+2023_2024,V13,Índices espectrais,NDRE,24,24,100
+2023_2024,V13,Índices espectrais,CIrededge,24,24,100
+2023_2024,V13,Índices espectrais,SAVI,24,24,100
+2023_2024,V13,Índices espectrais,EVI,24,24,100
+2023_2024,V13,Índices espectrais,VARI,24,24,100
+2023_2024,V13,Índices espectrais,TGI,24,24,100
+2023_2024,V13,Estatísticas espectrais,spec_mean,24,24,100
+2023_2024,V13,Estatísticas espectrais,spec_std,24,24,100
+2023_2024,V13,Estatísticas espectrais,spec_p10,24,24,100
+2023_2024,V13,Estatísticas espectrais,spec_p50,24,24,100
+2023_2024,V13,Estatísticas espectrais,spec_p90,24,24,100
+2023_2024,V13,GLCM global,glcm_asm,24,24,100
+2023_2024,V13,GLCM global,glcm_contrast,24,24,100
+2023_2024,V13,GLCM global,glcm_correlation,24,24,100
+2023_2024,V13,GLCM global,glcm_variance,24,24,100
+2023_2024,V13,GLCM global,glcm_idm,24,24,100
+2023_2024,V13,GLCM global,glcm_sum_average,24,24,100
+2023_2024,V13,GLCM global,glcm_sum_variance,24,24,100
+2023_2024,V13,GLCM global,glcm_sum_entropy,24,24,100
+2023_2024,V13,GLCM global,glcm_entropy,24,24,100
+2023_2024,V13,GLCM global,glcm_diff_entropy,24,24,100
+2023_2024,V13,GLCM global,glcm_imc1,24,24,100
+2023_2024,V13,GLCM global,glcm_imc2,24,24,100
+2023_2024,V13,GLCM global,glcm_mcc,24,24,100
+2023_2024,V13,GLCM global,glcm_dissimilarity,24,24,100
+2023_2024,V13,GLCM global,glcm_inertia,24,24,100
+2023_2024,V13,GLCM global,glcm_cluster_shade,24,24,100
+2023_2024,V13,GLCM global,glcm_cluster_prominence,24,24,100
+2023_2024,V13,GLCM global,glcm_homogeneity,24,24,100
+2023_2024,V13,GLCM janela w3,glcmw3_asm,24,24,100
+2023_2024,V13,GLCM janela w3,glcmw3_contrast,24,24,100
+2023_2024,V13,GLCM janela w3,glcmw3_entropy,24,24,100
+2023_2024,V13,GLCM janela w3,glcmw3_correlation,24,24,100
+2023_2024,V13,GLCM janela w3,glcmw3_homogeneity,24,24,100
+2023_2024,V13,GLCM janela w5,glcmw5_asm,24,24,100
+2023_2024,V13,GLCM janela w5,glcmw5_contrast,24,24,100
+2023_2024,V13,GLCM janela w5,glcmw5_entropy,24,24,100
+2023_2024,V13,GLCM janela w5,glcmw5_correlation,24,24,100
+2023_2024,V13,GLCM janela w5,glcmw5_homogeneity,24,24,100
+2023_2024,V13,GLCM janela w7,glcmw7_asm,24,24,100
+2023_2024,V13,GLCM janela w7,glcmw7_contrast,24,24,100
+2023_2024,V13,GLCM janela w7,glcmw7_entropy,24,24,100
+2023_2024,V13,GLCM janela w7,glcmw7_correlation,24,24,100
+2023_2024,V13,GLCM janela w7,glcmw7_homogeneity,24,24,100
+2023_2024,V13,GLCM RGB global,rgb_glcm_asm,24,24,100
+2023_2024,V13,GLCM RGB global,rgb_glcm_contrast,24,24,100
+2023_2024,V13,GLCM RGB global,rgb_glcm_correlation,24,24,100
+2023_2024,V13,GLCM RGB global,rgb_glcm_variance,24,24,100
+2023_2024,V13,GLCM RGB global,rgb_glcm_idm,24,24,100
+2023_2024,V13,GLCM RGB global,rgb_glcm_sum_average,24,24,100
+2023_2024,V13,GLCM RGB global,rgb_glcm_sum_variance,24,24,100
+2023_2024,V13,GLCM RGB global,rgb_glcm_sum_entropy,24,24,100
+2023_2024,V13,GLCM RGB global,rgb_glcm_entropy,24,24,100
+2023_2024,V13,GLCM RGB global,rgb_glcm_diff_entropy,24,24,100
+2023_2024,V13,GLCM RGB global,rgb_glcm_imc1,24,24,100
+2023_2024,V13,GLCM RGB global,rgb_glcm_imc2,24,24,100
+2023_2024,V13,GLCM RGB global,rgb_glcm_mcc,24,24,100
+2023_2024,V13,GLCM RGB global,rgb_glcm_dissimilarity,24,24,100
+2023_2024,V13,GLCM RGB global,rgb_glcm_inertia,24,24,100
+2023_2024,V13,GLCM RGB global,rgb_glcm_cluster_shade,24,24,100
+2023_2024,V13,GLCM RGB global,rgb_glcm_cluster_prominence,24,24,100
+2023_2024,V13,GLCM RGB global,rgb_glcm_homogeneity,24,24,100
+2023_2024,V13,GLCM RGB janela w3,rgb_glcmw3_asm,24,24,100
+2023_2024,V13,GLCM RGB janela w3,rgb_glcmw3_contrast,24,24,100
+2023_2024,V13,GLCM RGB janela w3,rgb_glcmw3_entropy,24,24,100
+2023_2024,V13,GLCM RGB janela w3,rgb_glcmw3_correlation,24,24,100
+2023_2024,V13,GLCM RGB janela w3,rgb_glcmw3_homogeneity,24,24,100
+2023_2024,V13,GLCM RGB janela w5,rgb_glcmw5_asm,24,24,100
+2023_2024,V13,GLCM RGB janela w5,rgb_glcmw5_contrast,24,24,100
+2023_2024,V13,GLCM RGB janela w5,rgb_glcmw5_entropy,24,24,100
+2023_2024,V13,GLCM RGB janela w5,rgb_glcmw5_correlation,24,24,100
+2023_2024,V13,GLCM RGB janela w5,rgb_glcmw5_homogeneity,24,24,100
+2023_2024,V13,GLCM RGB janela w7,rgb_glcmw7_asm,24,24,100
+2023_2024,V13,GLCM RGB janela w7,rgb_glcmw7_contrast,24,24,100
+2023_2024,V13,GLCM RGB janela w7,rgb_glcmw7_entropy,24,24,100
+2023_2024,V13,GLCM RGB janela w7,rgb_glcmw7_correlation,24,24,100
+2023_2024,V13,GLCM RGB janela w7,rgb_glcmw7_homogeneity,24,24,100
+2023_2024,R2,Índices espectrais,NDVI,24,24,100
+2023_2024,R2,Índices espectrais,GNDVI,24,24,100
+2023_2024,R2,Índices espectrais,NDRE,24,24,100
+2023_2024,R2,Índices espectrais,CIrededge,24,24,100
+2023_2024,R2,Índices espectrais,SAVI,24,24,100
+2023_2024,R2,Índices espectrais,EVI,24,24,100
+2023_2024,R2,Índices espectrais,VARI,24,24,100
+2023_2024,R2,Índices espectrais,TGI,24,24,100
+2023_2024,R2,Estatísticas espectrais,spec_mean,24,24,100
+2023_2024,R2,Estatísticas espectrais,spec_std,24,24,100
+2023_2024,R2,Estatísticas espectrais,spec_p10,24,24,100
+2023_2024,R2,Estatísticas espectrais,spec_p50,24,24,100
+2023_2024,R2,Estatísticas espectrais,spec_p90,24,24,100
+2023_2024,R2,GLCM global,glcm_asm,24,24,100
+2023_2024,R2,GLCM global,glcm_contrast,24,24,100
+2023_2024,R2,GLCM global,glcm_correlation,24,24,100
+2023_2024,R2,GLCM global,glcm_variance,24,24,100
+2023_2024,R2,GLCM global,glcm_idm,24,24,100
+2023_2024,R2,GLCM global,glcm_sum_average,24,24,100
+2023_2024,R2,GLCM global,glcm_sum_variance,24,24,100
+2023_2024,R2,GLCM global,glcm_sum_entropy,24,24,100
+2023_2024,R2,GLCM global,glcm_entropy,24,24,100
+2023_2024,R2,GLCM global,glcm_diff_entropy,24,24,100
+2023_2024,R2,GLCM global,glcm_imc1,24,24,100
+2023_2024,R2,GLCM global,glcm_imc2,24,24,100
+2023_2024,R2,GLCM global,glcm_mcc,24,24,100
+2023_2024,R2,GLCM global,glcm_dissimilarity,24,24,100
+2023_2024,R2,GLCM global,glcm_inertia,24,24,100
+2023_2024,R2,GLCM global,glcm_cluster_shade,24,24,100
+2023_2024,R2,GLCM global,glcm_cluster_prominence,24,24,100
+2023_2024,R2,GLCM global,glcm_homogeneity,24,24,100
+2023_2024,R2,GLCM janela w3,glcmw3_asm,24,24,100
+2023_2024,R2,GLCM janela w3,glcmw3_contrast,24,24,100
+2023_2024,R2,GLCM janela w3,glcmw3_entropy,24,24,100
+2023_2024,R2,GLCM janela w3,glcmw3_correlation,24,24,100
+2023_2024,R2,GLCM janela w3,glcmw3_homogeneity,24,24,100
+2023_2024,R2,GLCM janela w5,glcmw5_asm,24,24,100
+2023_2024,R2,GLCM janela w5,glcmw5_contrast,24,24,100
+2023_2024,R2,GLCM janela w5,glcmw5_entropy,24,24,100
+2023_2024,R2,GLCM janela w5,glcmw5_correlation,24,24,100
+2023_2024,R2,GLCM janela w5,glcmw5_homogeneity,24,24,100
+2023_2024,R2,GLCM janela w7,glcmw7_asm,24,24,100
+2023_2024,R2,GLCM janela w7,glcmw7_contrast,24,24,100
+2023_2024,R2,GLCM janela w7,glcmw7_entropy,24,24,100
+2023_2024,R2,GLCM janela w7,glcmw7_correlation,24,24,100
+2023_2024,R2,GLCM janela w7,glcmw7_homogeneity,24,24,100
+2023_2024,R2,GLCM RGB global,rgb_glcm_asm,24,24,100
+2023_2024,R2,GLCM RGB global,rgb_glcm_contrast,24,24,100
+2023_2024,R2,GLCM RGB global,rgb_glcm_correlation,24,24,100
+2023_2024,R2,GLCM RGB global,rgb_glcm_variance,24,24,100
+2023_2024,R2,GLCM RGB global,rgb_glcm_idm,24,24,100
+2023_2024,R2,GLCM RGB global,rgb_glcm_sum_average,24,24,100
+2023_2024,R2,GLCM RGB global,rgb_glcm_sum_variance,24,24,100
+2023_2024,R2,GLCM RGB global,rgb_glcm_sum_entropy,24,24,100
+2023_2024,R2,GLCM RGB global,rgb_glcm_entropy,24,24,100
+2023_2024,R2,GLCM RGB global,rgb_glcm_diff_entropy,24,24,100
+2023_2024,R2,GLCM RGB global,rgb_glcm_imc1,24,24,100
+2023_2024,R2,GLCM RGB global,rgb_glcm_imc2,24,24,100
+2023_2024,R2,GLCM RGB global,rgb_glcm_mcc,24,24,100
+2023_2024,R2,GLCM RGB global,rgb_glcm_dissimilarity,24,24,100
+2023_2024,R2,GLCM RGB global,rgb_glcm_inertia,24,24,100
+2023_2024,R2,GLCM RGB global,rgb_glcm_cluster_shade,24,24,100
+2023_2024,R2,GLCM RGB global,rgb_glcm_cluster_prominence,24,24,100
+2023_2024,R2,GLCM RGB global,rgb_glcm_homogeneity,24,24,100
+2023_2024,R2,GLCM RGB janela w3,rgb_glcmw3_asm,24,24,100
+2023_2024,R2,GLCM RGB janela w3,rgb_glcmw3_contrast,24,24,100
+2023_2024,R2,GLCM RGB janela w3,rgb_glcmw3_entropy,24,24,100
+2023_2024,R2,GLCM RGB janela w3,rgb_glcmw3_correlation,24,24,100
+2023_2024,R2,GLCM RGB janela w3,rgb_glcmw3_homogeneity,24,24,100
+2023_2024,R2,GLCM RGB janela w5,rgb_glcmw5_asm,24,24,100
+2023_2024,R2,GLCM RGB janela w5,rgb_glcmw5_contrast,24,24,100
+2023_2024,R2,GLCM RGB janela w5,rgb_glcmw5_entropy,24,24,100
+2023_2024,R2,GLCM RGB janela w5,rgb_glcmw5_correlation,24,24,100
+2023_2024,R2,GLCM RGB janela w5,rgb_glcmw5_homogeneity,24,24,100
+2023_2024,R2,GLCM RGB janela w7,rgb_glcmw7_asm,24,24,100
+2023_2024,R2,GLCM RGB janela w7,rgb_glcmw7_contrast,24,24,100
+2023_2024,R2,GLCM RGB janela w7,rgb_glcmw7_entropy,24,24,100
+2023_2024,R2,GLCM RGB janela w7,rgb_glcmw7_correlation,24,24,100
+2023_2024,R2,GLCM RGB janela w7,rgb_glcmw7_homogeneity,24,24,100
+2023_2024,R5,Índices espectrais,NDVI,24,24,100
+2023_2024,R5,Índices espectrais,GNDVI,24,24,100
+2023_2024,R5,Índices espectrais,NDRE,24,24,100
+2023_2024,R5,Índices espectrais,CIrededge,24,24,100
+2023_2024,R5,Índices espectrais,SAVI,24,24,100
+2023_2024,R5,Índices espectrais,EVI,24,24,100
+2023_2024,R5,Índices espectrais,VARI,24,24,100
+2023_2024,R5,Índices espectrais,TGI,24,24,100
+2023_2024,R5,Estatísticas espectrais,spec_mean,24,24,100
+2023_2024,R5,Estatísticas espectrais,spec_std,24,24,100
+2023_2024,R5,Estatísticas espectrais,spec_p10,24,24,100
+2023_2024,R5,Estatísticas espectrais,spec_p50,24,24,100
+2023_2024,R5,Estatísticas espectrais,spec_p90,24,24,100
+2023_2024,R5,GLCM global,glcm_asm,24,24,100
+2023_2024,R5,GLCM global,glcm_contrast,24,24,100
+2023_2024,R5,GLCM global,glcm_correlation,24,24,100
+2023_2024,R5,GLCM global,glcm_variance,24,24,100
+2023_2024,R5,GLCM global,glcm_idm,24,24,100
+2023_2024,R5,GLCM global,glcm_sum_average,24,24,100
+2023_2024,R5,GLCM global,glcm_sum_variance,24,24,100
+2023_2024,R5,GLCM global,glcm_sum_entropy,24,24,100
+2023_2024,R5,GLCM global,glcm_entropy,24,24,100
+2023_2024,R5,GLCM global,glcm_diff_entropy,24,24,100
+2023_2024,R5,GLCM global,glcm_imc1,24,24,100
+2023_2024,R5,GLCM global,glcm_imc2,24,24,100
+2023_2024,R5,GLCM global,glcm_mcc,24,24,100
+2023_2024,R5,GLCM global,glcm_dissimilarity,24,24,100
+2023_2024,R5,GLCM global,glcm_inertia,24,24,100
+2023_2024,R5,GLCM global,glcm_cluster_shade,24,24,100
+2023_2024,R5,GLCM global,glcm_cluster_prominence,24,24,100
+2023_2024,R5,GLCM global,glcm_homogeneity,24,24,100
+2023_2024,R5,GLCM janela w3,glcmw3_asm,24,24,100
+2023_2024,R5,GLCM janela w3,glcmw3_contrast,24,24,100
+2023_2024,R5,GLCM janela w3,glcmw3_entropy,24,24,100
+2023_2024,R5,GLCM janela w3,glcmw3_correlation,24,24,100
+2023_2024,R5,GLCM janela w3,glcmw3_homogeneity,24,24,100
+2023_2024,R5,GLCM janela w5,glcmw5_asm,24,24,100
+2023_2024,R5,GLCM janela w5,glcmw5_contrast,24,24,100
+2023_2024,R5,GLCM janela w5,glcmw5_entropy,24,24,100
+2023_2024,R5,GLCM janela w5,glcmw5_correlation,24,24,100
+2023_2024,R5,GLCM janela w5,glcmw5_homogeneity,24,24,100
+2023_2024,R5,GLCM janela w7,glcmw7_asm,24,24,100
+2023_2024,R5,GLCM janela w7,glcmw7_contrast,24,24,100
+2023_2024,R5,GLCM janela w7,glcmw7_entropy,24,24,100
+2023_2024,R5,GLCM janela w7,glcmw7_correlation,24,24,100
+2023_2024,R5,GLCM janela w7,glcmw7_homogeneity,24,24,100
+2023_2024,R5,GLCM RGB global,rgb_glcm_asm,24,24,100
+2023_2024,R5,GLCM RGB global,rgb_glcm_contrast,24,24,100
+2023_2024,R5,GLCM RGB global,rgb_glcm_correlation,24,24,100
+2023_2024,R5,GLCM RGB global,rgb_glcm_variance,24,24,100
+2023_2024,R5,GLCM RGB global,rgb_glcm_idm,24,24,100
+2023_2024,R5,GLCM RGB global,rgb_glcm_sum_average,24,24,100
+2023_2024,R5,GLCM RGB global,rgb_glcm_sum_variance,24,24,100
+2023_2024,R5,GLCM RGB global,rgb_glcm_sum_entropy,24,24,100
+2023_2024,R5,GLCM RGB global,rgb_glcm_entropy,24,24,100
+2023_2024,R5,GLCM RGB global,rgb_glcm_diff_entropy,24,24,100
+2023_2024,R5,GLCM RGB global,rgb_glcm_imc1,24,24,100
+2023_2024,R5,GLCM RGB global,rgb_glcm_imc2,24,24,100
+2023_2024,R5,GLCM RGB global,rgb_glcm_mcc,24,24,100
+2023_2024,R5,GLCM RGB global,rgb_glcm_dissimilarity,24,24,100
+2023_2024,R5,GLCM RGB global,rgb_glcm_inertia,24,24,100
+2023_2024,R5,GLCM RGB global,rgb_glcm_cluster_shade,24,24,100
+2023_2024,R5,GLCM RGB global,rgb_glcm_cluster_prominence,24,24,100
+2023_2024,R5,GLCM RGB global,rgb_glcm_homogeneity,24,24,100
+2023_2024,R5,GLCM RGB janela w3,rgb_glcmw3_asm,24,24,100
+2023_2024,R5,GLCM RGB janela w3,rgb_glcmw3_contrast,24,24,100
+2023_2024,R5,GLCM RGB janela w3,rgb_glcmw3_entropy,24,24,100
+2023_2024,R5,GLCM RGB janela w3,rgb_glcmw3_correlation,24,24,100
+2023_2024,R5,GLCM RGB janela w3,rgb_glcmw3_homogeneity,24,24,100
+2023_2024,R5,GLCM RGB janela w5,rgb_glcmw5_asm,24,24,100
+2023_2024,R5,GLCM RGB janela w5,rgb_glcmw5_contrast,24,24,100
+2023_2024,R5,GLCM RGB janela w5,rgb_glcmw5_entropy,24,24,100
+2023_2024,R5,GLCM RGB janela w5,rgb_glcmw5_correlation,24,24,100
+2023_2024,R5,GLCM RGB janela w5,rgb_glcmw5_homogeneity,24,24,100
+2023_2024,R5,GLCM RGB janela w7,rgb_glcmw7_asm,24,24,100
+2023_2024,R5,GLCM RGB janela w7,rgb_glcmw7_contrast,24,24,100
+2023_2024,R5,GLCM RGB janela w7,rgb_glcmw7_entropy,24,24,100
+2023_2024,R5,GLCM RGB janela w7,rgb_glcmw7_correlation,24,24,100
+2023_2024,R5,GLCM RGB janela w7,rgb_glcmw7_homogeneity,24,24,100

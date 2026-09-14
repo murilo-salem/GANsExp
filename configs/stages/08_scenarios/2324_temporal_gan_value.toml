@@ -1,0 +1,29 @@
+[experiment]
+run_id = "2324_temporal_gan_value"
+season = "2023_2024"
+target = "Biomassa+Produtividade"
+validation_unit = "parcela"
+description = "CV aninhada do ganho de GAN temporal em V13 e R5"
+
+[inputs]
+stage4 = "{artifacts}/archive/legacy/pipeline/stage4_2324"
+table = "{data}/raw/safra_2023_2024/field/parametros_2324_normalizado.xlsx"
+
+[execution]
+module = "milho_experiment.pipeline.stage_08_scenarios.stage12_temporal_gan_value"
+arguments = [
+  "run",
+  "--stage4", "{artifacts}/archive/legacy/pipeline/stage4_2324",
+  "--table", "{data}/raw/safra_2023_2024/field/parametros_2324_normalizado.xlsx",
+  "--out", "{artifacts}/runs/2324_temporal_gan_value/results",
+  "--horizons", "V13", "R5",
+  "--targets", "Biomassa", "Produtividade",
+  "--rs-modes", "rs_puro", "rs_dose",
+  "--screen-epochs", "50",
+  "--final-epochs", "200",
+  "--screen-seed", "7",
+  "--final-seeds", "7", "11", "23",
+  "--max-aux", "4",
+  "--batch-size", "4",
+  "--bootstrap", "10000",
+]

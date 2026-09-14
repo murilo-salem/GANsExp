@@ -1,0 +1,22 @@
+Metadata-Version: 2.4
+Name: milho-experiment
+Version: 0.1.0
+Summary: Pipeline reproduzível para experimentos fenológicos de milho
+Requires-Python: >=3.12
+Requires-Dist: numpy<3,>=2.2
+Requires-Dist: pandas<4,>=3.0
+Requires-Dist: scipy<2,>=1.17
+Requires-Dist: scikit-learn<2,>=1.8
+Requires-Dist: openpyxl<4,>=3.1
+Requires-Dist: tifffile>=2026.1
+Requires-Dist: pyshp<4,>=3.0
+Requires-Dist: zarr<4,>=3
+Requires-Dist: numcodecs<1,>=0.16
+Provides-Extra: analysis
+Requires-Dist: matplotlib<4,>=3.10; extra == "analysis"
+Provides-Extra: gan
+Requires-Dist: torch>=2.11; extra == "gan"
+Provides-Extra: geospatial
+Requires-Dist: rasterio>=1.4; extra == "geospatial"
+Provides-Extra: dev
+Requires-Dist: pytest>=8; extra == "dev"

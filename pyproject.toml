@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "milho-experiment"
+version = "0.1.0"
+description = "Pipeline reproduzível para experimentos fenológicos de milho"
+requires-python = ">=3.12"
+dependencies = [
+  "numpy>=2.2,<3",
+  "pandas>=3.0,<4",
+  "scipy>=1.17,<2",
+  "scikit-learn>=1.8,<2",
+  "openpyxl>=3.1,<4",
+  "tifffile>=2026.1",
+  "pyshp>=3.0,<4",
+  "zarr>=3,<4",
+  "numcodecs>=0.16,<1",
+]
+
+[project.optional-dependencies]
+analysis = ["matplotlib>=3.10,<4"]
+gan = ["torch>=2.11"]
+geospatial = ["rasterio>=1.4"]
+dev = ["pytest>=8"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

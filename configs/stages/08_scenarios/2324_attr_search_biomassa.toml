@@ -1,0 +1,24 @@
+[experiment]
+run_id = "2324_attr_search_biomassa"
+season = "2023_2024"
+target = "Biomassa"
+validation_unit = "parcela"
+description = "Validação do valor preditivo da GAN (cenários veg/fake/real/fusion) - Biomassa"
+
+[inputs]
+stage4 = "{artifacts}/archive/legacy/pipeline/stage4_2324"
+table = "{data}/raw/safra_2023_2024/field/parametros_2324_normalizado.xlsx"
+
+[execution]
+module = "milho_experiment.pipeline.stage_08_scenarios.stage5_attribute_search"
+arguments = [
+  "sweep",
+  "--stage4", "{artifacts}/archive/legacy/pipeline/stage4_2324",
+  "--table", "{data}/raw/safra_2023_2024/field/parametros_2324_normalizado.xlsx",
+  "--target", "Biomassa",
+  "--epochs", "200",
+  "--batch-size", "4",
+  "--seeds", "7", "11", "23",
+  "--bootstrap", "1000",
+  "--out", "{artifacts}/runs/2324_attr_search_biomassa/results",
+]

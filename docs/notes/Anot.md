@@ -1,0 +1,1 @@
+Criar um tensor com RGB + variáveis (multi/índice/glcm) empilhados. Para cada safra e estágio. 

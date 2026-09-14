@@ -5,6 +5,10 @@ Repo.zip
 pytorch-CycleGAN-and-pix2pix/
 models
 
+# Resultados reproduzíveis; manter apenas documentação e manifests selecionados no Git
+artifacts/runs/
+artifacts/archive/
+
 # Python
 __pycache__/
 *.pyc
@@ -16,3 +20,13 @@ __pycache__/
 .venv/
 venv/
 env/
+.venv-*/
+*.venv/
+
+# Runtime state and external framework checkout
+*.pid
+*.resume.pth
+code/
+
+# Cache de token MSAL (SharePoint) - contem credenciais
+.msal_token_cache.json
