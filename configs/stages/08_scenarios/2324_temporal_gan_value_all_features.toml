@@ -1,0 +1,30 @@
+[experiment]
+run_id = "2324_temporal_gan_value_all_features"
+season = "2023_2024"
+target = "Produtividade"
+validation_unit = "parcela"
+description = "Previsão de produtividade com R5 sintético e seleção entre todos os índices/GLCM RRENIR"
+
+[inputs]
+stage4 = "{artifacts}/archive/legacy/pipeline/stage4_2324"
+table = "{data}/raw/safra_2023_2024/field/parametros_2324_normalizado.xlsx"
+
+[execution]
+module = "milho_experiment.pipeline.stage_08_scenarios.stage12_temporal_gan_value"
+arguments = [
+  "run",
+  "--stage4", "{artifacts}/archive/legacy/pipeline/stage4_2324",
+  "--table", "{data}/raw/safra_2023_2024/field/parametros_2324_normalizado.xlsx",
+  "--out", "{artifacts}/runs/2324_temporal_gan_value_all_features/results",
+  "--horizons", "R5",
+  "--targets", "Produtividade",
+  "--rs-modes", "rs_puro",
+  "--screen-epochs", "50",
+  "--final-epochs", "200",
+  "--screen-seed", "7",
+  "--final-seeds", "7", "11", "23",
+  "--max-aux", "4",
+  "--candidate-set", "all",
+  "--batch-size", "4",
+  "--bootstrap", "10000",
+]

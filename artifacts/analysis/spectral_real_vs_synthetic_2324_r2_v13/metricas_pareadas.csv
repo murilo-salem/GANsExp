@@ -1,0 +1,5 @@
+escala,banda,band_index,n,vies,mae,rmse,angulo_espectral_medio_graus
+banda,Vermelho,0,6,0.016545775,0.016545775,0.018790081,
+banda,Red edge,1,6,0.023985689,0.023985689,0.026910906,
+banda,NIR,2,6,0.0043605268,0.0076998174,0.010067209,
+perfil,todas,,6,,,,2.2036695

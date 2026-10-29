@@ -30,3 +30,6 @@ code/
 
 # Cache de token MSAL (SharePoint) - contem credenciais
 .msal_token_cache.json
+
+# Checkout independente, versionado em AgroSAT-Prod/MilhoHiperMulti
+/MilhoHiperMulti/

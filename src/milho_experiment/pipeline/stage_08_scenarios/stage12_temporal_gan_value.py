@@ -34,6 +34,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 
 from milho_experiment.pix2pix import enable_imports
+from milho_experiment.gan_attributes import LEGACY_RRENIR_CANDIDATES
 from milho_experiment.pipeline.stage_06_datasets.stage6_features_ortho import parcel_features
 enable_imports()
 from milho_experiment.temporal import (
@@ -374,26 +375,27 @@ def screen_score(records: Sequence[TemporalRecord], target: str, attrs: Sequence
 
 def progressive_select(records: Sequence[TemporalRecord], target: str, *, horizon: str,
                        outer_block: int, max_aux: int, epochs: int, seed: int,
-                       batch_size: int, device, cache: Path, n_jobs: int):
+                       batch_size: int, device, cache: Path, n_jobs: int,
+                       candidates: Sequence[str] = AUX_CANDIDATES):
     selected: tuple[str, ...] = ()
     current = screen_score(records, target, selected, horizon=horizon,
                            outer_block=outer_block, epochs=epochs, seed=seed,
                            batch_size=batch_size, device=device, cache=cache, n_jobs=n_jobs)
     trace = [{"step": 0, "candidate": "", "selected": "", "delta_r2": current,
               "accepted": True}]
-    for step in range(1, max_aux + 1):
-        candidates = []
-        for name in AUX_CANDIDATES:
+    for step in range(1, min(max_aux, len(candidates)) + 1):
+        scored_candidates = []
+        for name in candidates:
             if name in selected:
                 continue
             attrs = (*selected, name)
             score = screen_score(records, target, attrs, horizon=horizon,
                                  outer_block=outer_block, epochs=epochs, seed=seed,
                                  batch_size=batch_size, device=device, cache=cache, n_jobs=n_jobs)
-            candidates.append((score, name, attrs))
+            scored_candidates.append((score, name, attrs))
             trace.append({"step": step, "candidate": name, "selected": ",".join(attrs),
                           "delta_r2": score, "accepted": False})
-        best_score, best_name, best_attrs = max(candidates, key=lambda row: (row[0], row[1]))
+        best_score, best_name, best_attrs = max(scored_candidates, key=lambda row: (row[0], row[1]))
         if best_score <= current:
             break
         selected, current = best_attrs, best_score
@@ -433,8 +435,10 @@ def run(args) -> None:
     prediction_rows: list[dict] = []
     image_rows: list[dict] = []
     selection_rows: list[dict] = []
-    if not 0 <= args.max_aux <= len(AUX_CANDIDATES):
-        raise ValueError(f"max_aux deve estar entre 0 e {len(AUX_CANDIDATES)}")
+    candidates = (LEGACY_RRENIR_CANDIDATES if args.candidate_set == "legacy"
+                  else AUX_CANDIDATES)
+    if not 0 <= args.max_aux <= len(candidates):
+        raise ValueError(f"max_aux deve estar entre 0 e {len(candidates)}")
 
     metadata = {
         "stage4": str(Path(args.stage4).resolve()),
@@ -446,7 +450,9 @@ def run(args) -> None:
         "screen_seed": args.screen_seed,
         "final_seeds": args.final_seeds,
         "max_aux": args.max_aux,
-        "candidate_channels": list(AUX_CANDIDATES),
+        "candidate_set": args.candidate_set,
+        "candidate_channels": list(candidates),
+        "global_glcm_encoding": "0.5 + atan(sign(x) * log1p(abs(x))) / pi",
         "selection_score": "inner combined minus forecast_history R2",
         "success": "delta_r2 > 0 and paired stratified bootstrap lower95 > 0",
     }
@@ -475,10 +481,11 @@ def run(args) -> None:
                         train, target, horizon=horizon, outer_block=outer_block,
                         max_aux=args.max_aux, epochs=args.screen_epochs,
                         seed=args.screen_seed, batch_size=args.batch_size,
-                        device=device, cache=cache / "screen", n_jobs=args.n_jobs)
+                        device=device, cache=cache / "screen", n_jobs=args.n_jobs,
+                        candidates=candidates)
                 else:
                     attrs = tuple(args.fixed_attrs)
-                    invalid = set(attrs) - set(AUX_CANDIDATES)
+                    invalid = set(attrs) - (set(candidates) | set(LEGACY_RRENIR_CANDIDATES))
                     if invalid:
                         raise ValueError(f"canais fixos inválidos: {sorted(invalid)}")
                     trace = [{"step": 0, "candidate": "fixed", "selected": ",".join(attrs),
@@ -658,6 +665,8 @@ def parser() -> argparse.ArgumentParser:
             cmd.add_argument("--screen-seed", type=int, default=7)
             cmd.add_argument("--final-seeds", type=int, nargs="+", default=[7, 11, 23])
             cmd.add_argument("--max-aux", type=int, default=4)
+            cmd.add_argument("--candidate-set", choices=["all", "legacy"], default="all",
+                             help="all: todos os índices e GLCMs RRENIR; legacy: nove auxiliares originais")
             cmd.add_argument("--batch-size", type=int, default=4)
             cmd.add_argument("--bootstrap", type=int, default=10_000)
             cmd.add_argument("--device", default="auto")

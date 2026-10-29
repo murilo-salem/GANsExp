@@ -13,7 +13,7 @@ from typing import Iterable, Sequence
 import numpy as np
 import pandas as pd
 
-from .indices import attribute_channels
+from .gan_attributes import ALL_RRENIR_CANDIDATES, rrenir_attribute_channels
 
 
 HORIZONS: dict[str, tuple[tuple[str, ...], str]] = {
@@ -21,17 +21,7 @@ HORIZONS: dict[str, tuple[tuple[str, ...], str]] = {
     "R5": (("V6", "V8", "V13", "R2"), "R5"),
 }
 
-AUX_CANDIDATES = (
-    "chlorophyll",
-    "NDVI",
-    "NDRE",
-    "SAVI",
-    "EVI2",
-    "glcm_asm",
-    "glcm_contrast",
-    "glcm_entropy",
-    "glcm_homogeneity",
-)
+AUX_CANDIDATES = ALL_RRENIR_CANDIDATES
 
 
 def _dose_key(value: object) -> str:
@@ -168,7 +158,7 @@ def temporal_input(history: Sequence[np.ndarray], aux_names: Sequence[str] = (),
         if refl.ndim != 3 or refl.shape[-1] != 3:
             raise ValueError(f"imagem RRENIR deve ter shape (H,W,3); recebeu {refl.shape}")
         if names:
-            aux = attribute_channels(refl, names=names, normalize=normalize)
+            aux = rrenir_attribute_channels(refl, names=names, normalize=normalize)
             blocks.append(np.concatenate([refl, aux], axis=-1))
         else:
             blocks.append(refl)
