@@ -1,0 +1,9 @@
+horizonte,bloco,motivo,checkpoint
+V13,1,checkpoint ausente,/home/murilo/Documentos/ABC/artifacts/runs/2324_temporal_gan_value/results/checkpoints/final/V13/outer1/innerouter/savi_b1c82fe0/e200_s7_net_G.pth
+V13,2,checkpoint ausente,/home/murilo/Documentos/ABC/artifacts/runs/2324_temporal_gan_value/results/checkpoints/final/V13/outer2/innerouter/chlorophyll_199bae23/e200_s7_net_G.pth
+V13,3,checkpoint ausente,/home/murilo/Documentos/ABC/artifacts/runs/2324_temporal_gan_value/results/checkpoints/final/V13/outer3/innerouter/gentropy_8c3283c8/e200_s7_net_G.pth
+V13,4,checkpoint ausente,/home/murilo/Documentos/ABC/artifacts/runs/2324_temporal_gan_value/results/checkpoints/final/V13/outer4/innerouter/ndre_gcontrast_ndvi_8053caf1/e200_s7_net_G.pth
+R5,1,checkpoint ausente,/home/murilo/Documentos/ABC/artifacts/runs/2324_temporal_gan_value/results/checkpoints/final/R5/outer1/innerouter/evi2_dc6e8fed/e200_s7_net_G.pth
+R5,2,checkpoint ausente,/home/murilo/Documentos/ABC/artifacts/runs/2324_temporal_gan_value/results/checkpoints/final/R5/outer2/innerouter/rrenir/e200_s7_net_G.pth
+R5,3,checkpoint ausente,/home/murilo/Documentos/ABC/artifacts/runs/2324_temporal_gan_value/results/checkpoints/final/R5/outer3/innerouter/ghomogeneity_4dff1466/e200_s7_net_G.pth
+R5,4,checkpoint ausente,/home/murilo/Documentos/ABC/artifacts/runs/2324_temporal_gan_value/results/checkpoints/final/R5/outer4/innerouter/rrenir/e200_s7_net_G.pth

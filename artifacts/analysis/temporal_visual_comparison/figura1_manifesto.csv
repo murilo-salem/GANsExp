@@ -1,0 +1,3 @@
+horizonte,fid,bloco_externo,semente,atributos,checkpoint,sintetico_disponivel
+V13,1,1,7,SAVI,/home/murilo/Documentos/ABC/artifacts/runs/2324_temporal_gan_value/results/checkpoints/final/V13/outer1/innerouter/savi_b1c82fe0/e200_s7_net_G.pth,False
+R5,1,1,7,EVI2,/home/murilo/Documentos/ABC/artifacts/runs/2324_temporal_gan_value/results/checkpoints/final/R5/outer1/innerouter/evi2_dc6e8fed/e200_s7_net_G.pth,False

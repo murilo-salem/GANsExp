@@ -1,0 +1,7 @@
+{
+  "result_dir": "/home/murilo/Documentos/ABC/artifacts/runs/2324_temporal_gan_value/results",
+  "rs_mode": "rs_puro",
+  "candidate_set": "legacy",
+  "aggregation": "mean predictions across seeds 7,11,23, then metrics across 24 parcels",
+  "test_input": "real target image features in all three training scenarios"
+}

@@ -1,7 +1,7 @@
 PLACEHOLDER — "models"
 
-Symlink que aponta para:
-  pytorch-CycleGAN-and-pix2pix/checkpoints
+Checkpoints históricos movidos para:
+  artifacts/archive/legacy/gan/checkpoints
 
-Recriar apos restaurar a pasta pytorch-CycleGAN-and-pix2pix/ com:
-  ln -s pytorch-CycleGAN-and-pix2pix/checkpoints models
+Para compatibilidade temporária, crie um symlink local apenas quando necessário:
+  ln -s artifacts/archive/legacy/gan/checkpoints models

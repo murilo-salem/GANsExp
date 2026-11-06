@@ -1,0 +1,3 @@
+horizonte,fid,bloco,semente,checkpoint,ssim,psnr_db,mae_espectral,mae_red,mae_rededge,mae_nir
+V13,1,1,7,/home/murilo/Documentos/ABC/artifacts/runs/2324_temporal_gan_value/results/checkpoints/final/V13/outer1/innerouter/savi_b1c82fe0/e200_s7_net_G.pth,,,,,,
+R5,1,1,7,/home/murilo/Documentos/ABC/artifacts/runs/2324_temporal_gan_value/results/checkpoints/final/R5/outer1/innerouter/evi2_dc6e8fed/e200_s7_net_G.pth,,,,,,

@@ -1,0 +1,3 @@
+pair,fid,outer_block,nitrogen_kg_ha,l1,abs_mean_ndvi_error,selection_rule,source,synthetic,real_target
+p132_V13toR5_d0_b4,132,4,0,0.1102886423468589,0.0415393710136413,nitrogen-treatment extremes,artifacts/archive/legacy/pipeline/stage4_2324/npy/V13__p132_d0_b4.npy,artifacts/runs/2324_gan_example_images/results/p132_V13toR5_d0_b4_fake.npy,artifacts/archive/legacy/pipeline/stage4_2324/npy/R5__p132_d0_b4.npy
+p128_V13toR5_d400_b4,128,4,400,0.1065642237663269,0.0452809929847717,nitrogen-treatment extremes,artifacts/archive/legacy/pipeline/stage4_2324/npy/V13__p128_d400_b4.npy,artifacts/runs/2324_gan_example_images/results/p128_V13toR5_d400_b4_fake.npy,artifacts/archive/legacy/pipeline/stage4_2324/npy/R5__p128_d400_b4.npy

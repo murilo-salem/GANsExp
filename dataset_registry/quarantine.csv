@@ -1,0 +1,5 @@
+relative_path,reason
+quarantine/safra_2023_2024/orthomosaics/RGB_zero_2023_2024.tif,GeoTIFF com offset de IFD inválido; tifffile não abre a série.
+quarantine/safra_2025_2026/hyperspectral/2025-12-12/5S.bil,Cubo ENVI sem o header .bil.hdr obrigatório.
+quarantine/safra_2025_2026/hyperspectral/2025-12-12/20M.bil,Cubo ENVI sem o header .bil.hdr obrigatório.
+quarantine/safra_2025_2026/hyperspectral/2025-12-12/19S.bil.hdr,Header ENVI órfão; o arquivo .bil correspondente está ausente.
