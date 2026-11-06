@@ -1,0 +1,61 @@
+{
+  "source": "/home/murilo/Documentos/ABC/artifacts/runs/2324_temporal_gan_value/results/oof_predictions.csv",
+  "source_sha256": "236ebf9ba1928ed9cf62928e3d3224af8615a50a04d5deed16370bfe92a07e46",
+  "rs_mode": "rs_puro",
+  "baseline": "augment_real",
+  "candidate": "augment_hybrid",
+  "run_metadata": {
+    "stage4": "/home/murilo/Documentos/ABC/artifacts/archive/legacy/pipeline/stage4_2324",
+    "table": "/home/murilo/Documentos/ABC/data/raw/safra_2023_2024/field/parametros_2324_normalizado.xlsx",
+    "horizons": [
+      "V13",
+      "R5"
+    ],
+    "targets": [
+      "Biomassa",
+      "Produtividade"
+    ],
+    "screen_epochs": 50,
+    "final_epochs": 200,
+    "screen_seed": 7,
+    "final_seeds": [
+      7,
+      11,
+      23
+    ],
+    "max_aux": 4,
+    "candidate_channels": [
+      "chlorophyll",
+      "NDVI",
+      "NDRE",
+      "SAVI",
+      "EVI2",
+      "glcm_asm",
+      "glcm_contrast",
+      "glcm_entropy",
+      "glcm_homogeneity"
+    ],
+    "selection_score": "inner combined minus forecast_history R2",
+    "success": "delta_r2 > 0 and paired stratified bootstrap lower95 > 0"
+  },
+  "seeds_averaged": [
+    7,
+    11,
+    23
+  ],
+  "point_definition": "n*((y-pred_real)^2-(y-pred_hybrid)^2)/sum((y-mean(y))^2)",
+  "point_mean": "R2_hybrid - R2_real; individual points are not individual R2 scores",
+  "bootstrap": {
+    "unit": "paired plots within each outer block",
+    "n": 10000,
+    "seed": 2026,
+    "interval": "percentile 2.5%, 97.5%",
+    "refit": false
+  },
+  "validation": "4 outer blocks of 6 plots; grouped internal model selection in source pipeline",
+  "limits": [
+    "OOF identities and pairing checked; prediction tables cannot certify absence of leakage.",
+    "Intervals condition on fitted OOF predictions and four observed blocks; not new-block uncertainty.",
+    "Synthetic features are cross-fitted before downstream inner CV; this alone does not establish strict nesting of the entire GAN-regressor chain."
+  ]
+}
